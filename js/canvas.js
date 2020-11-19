@@ -126,7 +126,7 @@ class NumberElementCollector {
         ['0', '1'],
         [0, innerWidth], // x
         [0, innerHeight], // y
-        [15, 50], // size
+        [15, 70], // size
         [-12, 12] // speed
       )
     )
@@ -139,7 +139,7 @@ var numberElementCollector = new NumberElementCollector()
 
 var draw = () => {
   ctx.beginPath()
-  ctx.fillStyle = "rgba(255, 255, 255, 0.2)"
+  ctx.fillStyle = "rgba(255, 255, 255, 0.23)"
   for (let numberElement of numberElementCollector.get()) {
     ctx.font = numberElement.size / 1.5 + 'px arial black'
     ctx.textBaseline = 'bottom'
