@@ -713,6 +713,8 @@ font-family: "Montserrat", Georgia, serif;}
     background: #3c3c3c; }
   .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.color-8 {
     background: #fbf304; }
+  .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.color-9 {
+    background: #fff; }
   .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.color-none {
     background: #fff;
     width: 20px;
@@ -992,6 +994,12 @@ padding-top: 2px;}
       background: #a84cb8; }
     .progress-bar.color-9 span {
       color: #a84cb8; }
+  .progress-bar.color-10 {
+    background: #ffffff; }
+    .progress-bar.color-10:after {
+      background: #ffffff; }
+    .progress-bar.color-10 span {
+      color: #ffffff; }
 .progress-wrap h3{
 	padding-bottom: 14px;
 }
