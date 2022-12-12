@@ -139,7 +139,7 @@ var numberElementCollector = new NumberElementCollector()
 
 var draw = () => {
   ctx.beginPath()
-  ctx.fillStyle = "rgba(255, 255, 255, 0.2)"
+  ctx.fillStyle = "rgba(160, 235, 189, 0.4)"
   for (let numberElement of numberElementCollector.get()) {
     ctx.font = numberElement.size / 1.5 + 'px arial black'
     ctx.textBaseline = 'bottom'
@@ -150,10 +150,10 @@ var draw = () => {
       numberElement.y
     )
   }
-  ctx.fillStyle = "rgba(255, 255, 255, 0.07)"
+  ctx.fillStyle = "rgba(160, 235, 189, 0.07)"
   ctx.fill()
   ctx.lineWidth = 1
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.08)"
+  ctx.strokeStyle = "rgba(160, 235, 189, 0.08)"
   ctx.stroke()
 }
 
