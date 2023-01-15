@@ -96,7 +96,7 @@ class NumberElementCollector {
     this.numberElements = []
 
     let generator = () => {
-      if(count != this.numberElements.length) {
+      if(count !== this.numberElements.length) {
         this.numberElements.push(
           this.generateNumberElement()
         )
