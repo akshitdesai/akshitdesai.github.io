@@ -1,0 +1,78 @@
+[
+	{
+		"startDate": "12024-05",
+		"endDate": "present",
+		"company": "Amazon",
+        "colorN": 4,
+		"position": "Software Dev Engineer",
+		"description": [
+			"Working for Customer service, Data and AI team that owns data platform with 2.65PB+ of data.",
+			"Also, worked in Beauty tech team, responsible for enabling VTO (Virtual Try-On) for beauty products."
+		],
+		"subExp":{
+				"startDate": "12023-05",
+				"endDate": "12023-08",
+				"company": "Amazon",
+                "colorN": 4,
+				"position": "Software Dev Engineer Intern",
+				"description": [
+					"Worked in Replenishment services team and unified apis for reorderablity score of items.",
+                    "Enabled 10+ teams to onboard with ease."
+				]
+		}
+	},
+	{
+		"startDate": "12023-08",
+		"endDate": "12024-05",
+		"company": "Instavision Inc.",
+        "colorN": 5,
+		"position": "Software Engineer, Backend Contract",
+		"description": [
+			"Founding member, worked on everything for AI-driven indoor/outdoor security camera products.",
+			"Engineered wrapper library, designed backend & db architracture, automated load tests, and integrated AWS IoT services."
+		]
+	},
+	{
+		"startDate": "12022-09",
+		"endDate": "12023-05",
+		"company": "Kamivision",
+        "colorN": 4,
+		"position": "Software Engineer, Contract",
+		"description": [
+            "Wrote unit and integration tests for golang backend services increased coverage from 0 to 90%.",
+            "Developed and impoved APIs for core backend services for old age home monitoring cameras."
+		],
+		"subExp":{
+            "startDate": "12023-08",
+            "endDate": "12023-04",
+            "company": "Velotio",
+            "colorN": 4,
+            "position": "Software Engineer",
+            "description": [
+                "Worked for kamivision."
+            ]
+		}
+	},
+    {
+        "startDate": "12022-04",
+        "endDate": "12021-06",
+        "company": "ZopSmart",
+        "colorN": 3,
+        "position": "Software Engineer",
+        "description": [
+            "Optimized Golang-based ETL pipelines for Kroger Co, US, and its subsidiaries, handling daily traffic of 9 million+ users.",
+            "Introduced & engineered distributed locking mechanism, Data fix Scripts, DB-retry features, resolving data discrepancy errors."
+        ],
+        "subExp":{
+            "startDate": "12021-02",
+            "endDate": "12021-05",
+            "company": "ZopSmart",
+            "colorN": 3,
+            "position": "Software Engineer Intern",
+            "description": [
+                "Scripted bulk data migration automation cutting 8 hours of manual efforts.",
+                "Contributed to internal projects, working on backend services written in Go."
+            ]
+        }
+    }
+]

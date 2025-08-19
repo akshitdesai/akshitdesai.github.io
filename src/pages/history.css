@@ -1,0 +1,64 @@
+/* Max width for education subdesc section */
+.edu-subdesc-title {
+	max-width: 500em;
+	display: inline-block;
+	font-weight: bold;
+	line-height: 1.5;
+	word-break: break-word;
+	white-space: normal;
+}
+/* Smooth transition for expanded/collapsed description block */
+.workexp-details {
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
+		transition: max-height 0.18s cubic-bezier(0.4,0.2,0.2,1), opacity 0.13s, padding 0.13s;
+	padding-top: 0;
+}
+.workexp-details.open {
+	max-height: 500px;
+	opacity: 1;
+	padding-top: 1em;
+}
+/* Chevron arrow animation for workexp toggle */
+.workexp-arrow {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+		transition: transform 0.13s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.workexp-arrow.open {
+	transform: rotate(90deg);
+}
+.workexp-arrow.closed {
+	transform: rotate(0deg);
+}
+/* Align workexp-list items in columns using monospace font for text alignment */
+.workexp-list {
+	font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+	font-size: 1em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.2em;
+}
+
+.workexp-list li {
+	display: flex;
+	gap: 1em;
+	white-space: normal;
+	word-break: break-word;
+}
+/* Holocene Calendar theme-aware styles */
+.App.light .holocene-calendar {
+	color: #111;
+}
+.App.dark .holocene-calendar {
+	color: #fff;
+}
+
+.App.light .holocene-calendar:hover {
+	color: #a06be0;
+}
+.App.dark .holocene-calendar:hover {
+	color: #00ff41;
+}

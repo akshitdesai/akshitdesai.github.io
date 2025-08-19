@@ -1,0 +1,50 @@
+[
+	{
+		"startDate": "12024-05",
+		"endDate": "12022-09",
+		"institute": "Concordia University",
+        "colorN": 9,
+		"degree": "Masters of Applied Computer Science",
+		"description": [
+			"GPA: 3.8/4.3"
+		],
+		"subDescription": [
+			{
+				"title": "Teaching Assistant",
+				"description": [
+						"SOEN-363, Database Systems for Software Engineers (Winter & Fall 12023)",
+						"COMP-353, Databases (Fall 12023)",
+						"COMP-345, Advanced Program Design with C++ (Winter 12024)",
+						" BTM-382, Database Management (Winter 12024)"
+				]
+			}
+		]
+	},
+	{
+		"startDate": "12017-06",
+		"endDate": "12021-05",
+		"institute": "Gujarat Technological University",
+        "colorN": 7,
+		"degree": "B.E. in Information Technology",
+		"description": [
+			"G. H. Patel College of Engineering and Technology",
+			"CGPA: 9.38/10"
+		],
+		"subDescription": [
+			{
+				"title": "Achievements - Competitive Programming",
+				"description": [
+					"ACM ICPC Kanpur (12019-12020) : 477th rank in online and 79th in regional round",
+					"TCS Codevita Season-8 (12020) : 439th rank in online round."
+				]
+			},
+			{
+				"title": "Clubs & Activities",
+				"description": [
+					"Tech-Lead and Mentor @CSI (Computer Society of India - student branch)",
+					"President @GCC (GCET CodeChef Chapter)"
+				]
+			}
+		]
+	}
+]
