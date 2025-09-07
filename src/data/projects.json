@@ -1,0 +1,63 @@
+[
+  {
+    "category": "DSA",
+    "colorN": 2,
+    "projects": [
+      {
+        "name": "Online Graph Coloring(GC)",
+        "github": "https://github.com/akshitdesai/gc",
+        "live": "http://akshitdesai.me/gc/",
+        "description": "Online GC visualizer for CBIP and first fit Algorithm."
+      }
+    ]
+  },
+  {
+    "category": "WebApps",
+    "colorN": 3,
+    "projects": [
+      {
+        "name": "Contest Reminder",
+        "github": "https://github.com/akshitdesai/ContestReminder",
+        "description": "Sends reminder e-mail for competitive programming contests."
+      },
+      {
+        "name": "ChuckMate",
+        "github": "https://github.com/akshitdesai/ChuckMate",
+        "live": "https://chuckmate.pythonanywhere.com/",
+        "description": "A Web-app that feeds new joke on every click."
+      }
+    ]
+  },
+  {
+    "category": "Android",
+    "colorN": 3,
+    "projects": [
+      {
+        "name": "Bachpan App",
+        "github": "https://github.com/akshitdesai/Bachpan-App",
+        "description": "App for Bachpan NGO."
+      },
+      {
+        "name": "Number-sys-Calc",
+        "github": "https://github.com/akshitdesai/MyCalc",
+        "description": "Converts between binary, decimal, octal, and hexadecimal."
+      },
+      {
+        "name": "Tic-Tac-Toe",
+        "github": "https://github.com/akshitdesai/Tic-Tac-Toe",
+        "description": "Simple Tic-Tac-Toe game with sound-effects and animations"
+      }
+    ]  
+  },
+  {
+    "category": "Others",
+    "colorN": 3,
+    "projects": [
+      {
+        "name": "Attendance System Using Face Recognition",
+        "github": "https://github.com/akshitdesai/Face-Recognition-attendence-system",
+        "description": "Recognizes face using R-π and OpenCV, mark the attendance."
+      }
+    ]
+  }
+]

@@ -1,0 +1,147 @@
+.projectree-root {
+  font-size: 1.1em;
+}
+
+.projectree-title {
+  /* No extra styles needed, inherits section-content */
+}
+
+.projectree-list {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding-left: 0;
+  list-style: none;
+}
+
+.projectree-category {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.1em;
+  padding: 0.15em 0;
+  position: relative;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.projectree-category.open {
+  font-weight: bold;
+}
+
+.projectree-ascii {
+  user-select: none;
+  margin-right: 0.5em;
+  color: inherit;
+  min-width: 2em;
+  font-weight: normal;
+}
+
+.projectree-category-title {
+  color: inherit;
+  font-weight: inherit;
+}
+
+.projectree-arrow {
+  margin-left: 0.5em;
+  transition: transform 0.13s cubic-bezier(0.4, 0.2, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+}
+
+.projectree-arrow svg {
+  transition: transform 0.18s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.projectree-category.open .projectree-arrow svg {
+  transform: rotate(90deg);
+}
+
+.projectree-arrow.open svg,
+.arrow-rotate {
+  transform: rotate(90deg);
+}
+
+.projectree-category-details {
+  padding-left: 2.5em;
+  margin-bottom: 0.5em;
+  border-left: 2px solid currentColor;
+  margin-left: 0.24em;
+  transition:
+    max-height 0.18s cubic-bezier(0.4, 0.2, 0.2, 1),
+    opacity 0.13s 0.07s, /* delay opacity for smooth close */
+    padding 0.13s;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  position: relative;
+  font-size: 1em;
+  will-change: max-height, opacity, padding;
+}
+
+.projectree-category-details.open {
+  max-height: 500px;
+  opacity: 1;
+  transition:
+    max-height 0.18s cubic-bezier(0.4, 0.2, 0.2, 1),
+    opacity 0.13s,
+    padding 0.13s;
+}
+
+.projectree-category-details.last {
+  border-left: none;
+}
+
+.projectree-project-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  position: relative;
+}
+
+.projectree-project {
+  display: block;
+  margin-bottom: 0.2em;
+  padding: 0.15em 0;
+  position: relative;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.projectree-project-row {
+  display: flex;
+  align-items: center;
+}
+
+.projectree-project-title {
+  margin-right: 1em;
+  font-weight: normal;
+}
+
+.projectree-project-title.open {
+  font-weight: bold;
+}
+
+.projectree-link {
+  margin-right: 0.7em;
+  display: flex;
+  align-items: center;
+}
+
+.projectree-project-desc {
+  border-left: 2px solid currentColor;
+  margin-left: 0.24em;
+  margin-bottom: 0.2em;
+  color: inherit;
+  font-size: 1em;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+  position: relative;
+  font-weight: normal;
+  padding-left: 2.5em;
+}
+
+.projectree-project-desc.last {
+  border-left: none;
+}

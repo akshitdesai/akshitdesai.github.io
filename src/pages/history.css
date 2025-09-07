@@ -62,3 +62,20 @@
 .App.dark .holocene-calendar:hover {
 	color: #00ff41;
 }
+
+.primary-link {
+  color: #111; /* primary color for light theme */
+  text-decoration: underline;
+  transition: color 0.18s;
+  font-weight: 500;
+}
+.App.dark .primary-link {
+  color: #fff; /* primary color for dark theme */
+}
+.primary-link:hover {
+  color: #a06be0; /* secondary color for light theme */
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+}
+.App.dark .primary-link:hover {
+  color: #00ff41; /* secondary color for dark theme */
+}
