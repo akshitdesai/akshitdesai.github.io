@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiSun, FiMoon } from 'react-icons/fi';
 import './App.css';
 import AboutMe from './pages/AboutMe.tsx';
@@ -29,6 +29,13 @@ function App() {
         return null;
     }
   }
+
+  useEffect(() => {
+    const favicon = document.querySelector("link[rel='icon']");
+    if (favicon) {
+      favicon.href = theme === 'dark' ? '/favicon.ico' : '/favicon-light.ico';
+    }
+  }, [theme]);
 
   return (
     <div className={`App ${theme}`}>
