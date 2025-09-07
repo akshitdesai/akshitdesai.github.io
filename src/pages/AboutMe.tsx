@@ -5,7 +5,7 @@ import './history.css';
 const AboutMe = () => (
   <div className="section-content">
     <h1><span className="secondary-text">akshit</span>desai</h1>
-    <h2><span className="secondary-text">I</span> am... 🤔</h2>
+    <h2><span className="secondary-text">I</span> am...</h2>
     <p>Well I don't know, I'll let you decide who you think I am. 
       {/* In-person TCP connection can be established over masala chai 🫖 if you're in Vancouver, BC contact for details. */}
     </p>
