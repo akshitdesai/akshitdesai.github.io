@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FiSun, FiMoon } from 'react-icons/fi';
 import './App.css';
 import AboutMe from './pages/AboutMe.tsx';
 import History from './pages/History.tsx';
 import Projectree from './pages/Projectree.tsx';
 import Ping from './pages/Ping.tsx'; // import new page
+import MobileMenu from './components/MobileMenu';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   const [theme, setTheme] = useState('dark');
@@ -14,6 +15,7 @@ function App() {
   };
 
   const [section, setSection] = useState('whoami');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const renderSection = () => {
     switch (section) {
@@ -37,24 +39,26 @@ function App() {
     }
   }, [theme]);
 
+
+
   return (
     <div className={`App ${theme}`}>
       
       <nav className="top-menu">
-        <button className={section === 'whoami' ? 'active' : ''} onClick={() => setSection('whoami')}>whoami</button>
-        <button className={section === 'history' ? 'active' : ''} onClick={() => setSection('history')}>history</button>
-        <button className={section === 'projectree' ? 'active' : ''} onClick={() => setSection('projectree')}>projectree</button>
-        <button className={section === 'ping' ? 'active' : ''} onClick={() => setSection('ping')}>ping</button>
-        <div className="theme-toggle">
-        <label className="switch">
-          <input type="checkbox" checked={theme === 'dark'} onChange={toggleTheme} aria-label="Toggle theme" />
-          <span className="slider">
-            <span className="knob">
-              {theme === 'light' ? <FiSun size={18} /> : <FiMoon size={18} />}
-            </span>
-          </span>
-        </label>
-      </div>
+        <div className="menu-buttons">
+          <button className={section === 'whoami' ? 'active' : ''} onClick={() => setSection('whoami')}>whoami</button>
+          <button className={section === 'history' ? 'active' : ''} onClick={() => setSection('history')}>history</button>
+          <button className={section === 'projectree' ? 'active' : ''} onClick={() => setSection('projectree')}>projectree</button>
+          <button className={section === 'ping' ? 'active' : ''} onClick={() => setSection('ping')}>ping</button>
+        </div>
+        <MobileMenu
+          section={section}
+          setSection={setSection}
+          isDropdownOpen={isDropdownOpen}
+          setIsDropdownOpen={setIsDropdownOpen}
+          theme={theme}
+        />
+        <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
       </nav>
       <main className="content">
         {renderSection()}

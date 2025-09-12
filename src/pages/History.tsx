@@ -8,9 +8,39 @@ interface HistoryProps {
   theme: string;
 }
 
+interface WorkExp {
+  startDate: string;
+  endDate: string;
+  company: string;
+  colorN: number;
+  position: string;
+  description?: string[];
+  subExp?: {
+    startDate: string;
+    endDate: string;
+    company: string;
+    colorN: number;
+    position: string;
+    description?: string[];
+  };
+}
+
+interface Edu {
+  startDate: string;
+  endDate: string;
+  institute: string;
+  colorN: number;
+  degree: string;
+  description?: string[];
+  subDescription?: {
+    title: string;
+    description?: string[];
+  }[];
+}
+
 const History = ({ theme }: HistoryProps) => {
-  const [workexp, setWorkexp] = useState([]);
-  const [edu, setEdu] = useState([]);
+  const [workexp, setWorkexp] = useState<WorkExp[]>([]);
+  const [edu, setEdu] = useState<Edu[]>([]);
 
   useEffect(() => {
     setWorkexp(workexpData);
@@ -90,7 +120,7 @@ const History = ({ theme }: HistoryProps) => {
                     ? <>{colorFirstN(exp.company, exp.colorN)}</>
                     : exp.company}
                 </span>
-                <span style={{ minWidth: '10em', display: 'inline-block' }}>{exp.position}</span>
+                <span className="workexp-position">{exp.position}</span>
             </li>
             <li
               className={`workexp-details${openIdx && openIdx.type === 'workexp' && openIdx.idx === idx ? ' open' : ''}`}
@@ -122,7 +152,7 @@ const History = ({ theme }: HistoryProps) => {
                             ? <>{colorFirstN(exp.subExp.company, exp.subExp.colorN)}</>
                             : exp.subExp.company}
                         </span>
-                        <span style={{ minWidth: '10em', display: 'inline-block' }}>{exp.subExp.position}</span>
+                        <span className="workexp-position">{exp.subExp.position}</span>
                       </li>
                       {exp.subExp.description && exp.subExp.description.length > 0 && exp.subExp.description.map((desc: string, sdIdx: number) => (
                         <li key={`subdesc-${sdIdx}`} style={{ marginBottom: '0.2em', lineHeight: 1.5, display: 'flex', alignItems: 'center', paddingLeft: '1.5em' }}>
@@ -170,7 +200,7 @@ const History = ({ theme }: HistoryProps) => {
                   {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
                     ? <>{colorFirstN(ed.institute,  ed.colorN)}</>
                     : ed.institute}
-                  , {ed.degree}
+                  <span className="edu-degree">, {ed.degree}</span>
                 </span>
             </li>
             <li

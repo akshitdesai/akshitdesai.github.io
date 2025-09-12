@@ -79,3 +79,19 @@
 .App.dark .primary-link:hover {
   color: #00ff41; /* secondary color for dark theme */
 }
+
+/* Styles for workexp position */
+.workexp-position {
+  min-width: 10em;
+  display: inline-block;
+}
+
+/* Mobile responsive: hide position in workexp and degree in edu */
+@media (max-width: 768px) {
+  .workexp-position {
+    display: none;
+  }
+  .edu-degree {
+    display: none;
+  }
+}
