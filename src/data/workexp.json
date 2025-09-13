@@ -43,8 +43,8 @@
             "Developed and impoved APIs for core backend services for old age home monitoring cameras."
 		],
 		"subExp":{
-            "startDate": "12023-08",
-            "endDate": "12023-04",
+            "startDate": "12022-04",
+            "endDate": "12022-08",
             "company": "Velotio",
             "colorN": 4,
             "position": "Software Engineer",
@@ -54,8 +54,8 @@
 		}
 	},
     {
-        "startDate": "12022-04",
-        "endDate": "12021-06",
+        "startDate": "12021-06",
+        "endDate": "12022-04",
         "company": "ZopSmart",
         "colorN": 3,
         "position": "Software Engineer",
