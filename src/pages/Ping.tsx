@@ -19,7 +19,6 @@ const Ping: React.FC = ({ theme }) => {
       
       <h2><span className="secondary-text">ping</span> pong!</h2>
       <PingPong theme={theme} />
-      {/* <p>The UI is responsive.</p> */}
     </div>
   );
 };

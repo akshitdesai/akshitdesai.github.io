@@ -1,132 +1,450 @@
-import React from 'react';
+import React, { useRef, useEffect, useState, useCallback } from "react";
+import './PingPong.css';
 
-type PingPongProps = {
+interface PingPongProps {
   theme: 'light' | 'dark';
-};
+}
 
-const PingPong: React.FC<PingPongProps> = ({ theme }) => {
-  const paddleColor = theme === 'light' ? '#111' : '#fff';
-  const ballColor = theme === 'light' ? '#a06be0' : '#00ff41';
+interface HintTextProps {
+  show: boolean;
+  theme: 'light' | 'dark';
+  children: string;
+}
 
+const HintText = ({ show, theme, children }: HintTextProps) => {
   return (
-    <div style={{
-      position: 'relative',
-      width: 360,
-      minHeight: 220,
-      marginLeft: '-10px', // moved slightly left
-      marginTop: '1em',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start'
-    }}>
-      <div style={{ position: 'relative', width: '320px', height: '180px' }}>
-        <style>
-          {`
-          .table,
-          .ball,
-          .paddle,
-          .result {
-            position: absolute;
-          }
-          .table {
-            width: 320px;
-            height: 180px;
-            border-radius: 12px;
-            top: 0;
-            left: -5px; /* move table slightly left */
-          }
-          .ball {
-            width: 16px;
-            height: 16px;
-            top: calc(50% - 8px);
-            left: calc(50% - 8px);
-            background-color: ${ballColor};
-            border-radius: 50%;
-            animation: ballMove 2.5s linear infinite;
-          }
-          .paddle {
-            width: 8px; /* thinner paddle */
-            height: 48px;
-            background-color: ${paddleColor};
-            border-radius: 6px;
-          }
-          .player {
-            top: calc(50% - 24px);
-            left: 16px;
-            animation: playerPaddle 2.5s linear infinite;
-          }
-          .ai {
-            top: calc(50% - 24px);
-            right: 16px;
-            animation: aiPaddle 2.5s linear infinite;
-          }
-          .result {
-            width: 100%;
-            left: 0;
-            top: 10%;
-            text-transform: uppercase;
-            text-align: center;
-            font-family: sans-serif;
-            color: black;
-            transform: scale(0);
-            animation: showResult 1s 2.6s both;
-            pointer-events: none;
-          }
-          @keyframes ballMove {
-            0% {
-              top: calc(50% - 8px);
-              left: calc(50% - 8px);
-            }
-            20% {
-              top: 140px;
-              left: 270px;
-            }
-            29.6% {
-              top: 170px;
-              left: 210px;
-            }
-            60% {
-              left: 32px;
-              top: 40px;
-            }
-            88.7% {
-              top: 0;
-              left: 220px;
-            }
-            100% {
-              top: 30px;
-              left: 320px;
-            }
-          }
-          @keyframes aiPaddle {
-            20% { top: 120px; }
-            29.6% { top: 140px; }
-            60% { top: 80px; }
-            88.7% { top: 40px; }
-            100% { top: 20px; }
-          }
-          @keyframes playerPaddle {
-            20% { top: 60px; }
-            29.6% { top: 80px; }
-            60% { top: 10px; }
-            88.7% { top: 30px; }
-            100% { top: 40px; }
-          }
-          @keyframes showResult {
-            100% { transform: scale(2); }
-          }
-          `}
-        </style>
-        <div className="table">
-          <div className="ball"></div>
-          <div className="paddle player"></div>
-          <div className="paddle ai"></div>
-        </div>
-        {/* Optionally, you can remove the result message or keep it hidden */}
-        {/* <h1 className="result">wygrałeś!</h1> */}
-      </div>
+    <div className={`ping-pong-hint ${theme} ${show ? 'show' : 'hide'}`}>
+      {children}
     </div>
   );
 };
 
+const PingPong = ({ theme }: PingPongProps) => {
+  const canvasRef = useRef(null);
+  const [finished, setFinished] = useState(false);
+  const [scoreLeft, setScoreLeft] = useState(0);
+  const [scoreRight, setScoreRight] = useState(0);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [hasServedOnce, setHasServedOnce] = useState(false);
+  const [showServeHint, setShowServeHint] = useState(true);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 768);
+  const [dimensions, setDimensions] = useState(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      return { width: 280, height: 158 };
+    }
+    return { width: 400, height: 225 };
+  });
+  
+  const animationIdRef = useRef(0);
+  
+  // Game variables
+  const windowWidth = dimensions.width;
+  const windowHeight = dimensions.height;
+  const scaleFactor = isMobile ? 0.7 : 1; // Scale down for mobile
+  const paddleWidth = 10 * scaleFactor;
+  const paddleHeight = 60 * scaleFactor;
+  const paddleStep = windowHeight / 9;
+  const borderOffset = 6;
+  const diameter = 16 * scaleFactor;
+
+  const xPaddleLeft = borderOffset;
+  const yPaddleLeftRef = useRef(windowHeight / 2);
+  const xPaddleRight = windowWidth - borderOffset - paddleWidth;
+  const yPaddleRightRef = useRef(windowHeight / 2);
+  
+  // Initialize ball position based on current dimensions
+  const rightServeXpos = windowWidth - borderOffset - paddleWidth - diameter/2;
+  const rightServeYpos = windowHeight / 2;
+  
+  const ballRef = useRef({
+    x: rightServeXpos,
+    y: rightServeYpos,
+    xSpeed: 2,
+    ySpeed: 2
+  });
+   
+  const gameStateRef = useRef({
+    started: false,
+    leftServe: false,
+    rightServe: true,
+    cpuSpeed: 8,
+    diffCpuBall: 0
+  });
+
+  const cpuMoveRight = () => {
+    const diff = ballRef.current.y - yPaddleRightRef.current - (paddleHeight / 2);
+    const moveAmount = Math.sign(diff) * Math.min(Math.abs(diff), gameStateRef.current.cpuSpeed);
+    yPaddleRightRef.current += moveAmount;
+    
+    // bound to play window
+    if (yPaddleRightRef.current <= 0) {
+      yPaddleRightRef.current = 0;
+    }
+    if (yPaddleRightRef.current + paddleHeight >= windowHeight) {
+      yPaddleRightRef.current = windowHeight - paddleHeight;
+    }
+  };
+
+  const cpuMove = () => {
+    const diff = ballRef.current.y - yPaddleLeftRef.current - (paddleHeight / 2);
+    const moveAmount = Math.sign(diff) * Math.min(Math.abs(diff), gameStateRef.current.cpuSpeed);
+    yPaddleLeftRef.current += moveAmount;
+    
+    // bound to play window
+    if (yPaddleLeftRef.current <= 0) {
+      yPaddleLeftRef.current = 0;
+    }
+    if (yPaddleLeftRef.current + paddleHeight >= windowHeight) {
+      yPaddleLeftRef.current = windowHeight - paddleHeight;
+    }
+
+    // Randomize CPU speed less frequently for smoother movement
+    if (Math.random() < 0.1) { // Only 10% chance each frame
+      const speedDiff = Math.floor(Math.random() * 2); // Smaller random changes
+      gameStateRef.current.cpuSpeed += Math.random() <= 0.5 ? speedDiff : (speedDiff * -1);
+
+      // bound the CPU speed change
+      if (gameStateRef.current.cpuSpeed > 12) {
+        gameStateRef.current.cpuSpeed = 12;
+      }
+      if (gameStateRef.current.cpuSpeed < 4) {
+        gameStateRef.current.cpuSpeed = 4;
+      }
+    }
+  };
+
+  const resetCPUSpeed = () => {
+    gameStateRef.current.cpuSpeed = 8;
+  };
+
+  const bounceTopBottom = () => {
+    if (ballRef.current.y < diameter / 2 || ballRef.current.y > windowHeight - diameter) {
+      ballRef.current.ySpeed *= -1;
+    }
+  };
+
+  const cpuShouldAction = () => {
+    gameStateRef.current.diffCpuBall = ballRef.current.y - yPaddleLeftRef.current;
+    // Remove auto-serve for CPU - only move when ball is coming toward it
+    if (gameStateRef.current.started && ballRef.current.xSpeed < 0) {
+      cpuMove();
+    }
+    // On mobile, also move right paddle (CPU vs CPU)
+    if (isMobile && gameStateRef.current.started && ballRef.current.xSpeed > 0) {
+      cpuMoveRight();
+    }
+  };
+
+  const boundToWindow = () => {
+    if (yPaddleLeftRef.current <= 0) yPaddleLeftRef.current = 0;
+    if (yPaddleLeftRef.current + paddleHeight >= windowHeight) yPaddleLeftRef.current = windowHeight - paddleHeight;
+    if (yPaddleRightRef.current <= 0) yPaddleRightRef.current = 0;
+    if (yPaddleRightRef.current + paddleHeight >= windowHeight) yPaddleRightRef.current = windowHeight - paddleHeight;
+  };
+
+  const drawStaticItems = (ctx: CanvasRenderingContext2D) => {
+    // Draw middle line
+    ctx.fillStyle = theme === 'light' ? '#ccc' : '#333';
+    ctx.fillRect((windowWidth - paddleWidth) / 2, 0, paddleWidth / 2, windowHeight);    
+
+    // Draw scores
+    ctx.fillStyle = theme === 'light' ? '#111' : '#fff';
+    ctx.font = `${18 * scaleFactor}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText((scoreLeft < 10 ? "0" + scoreLeft : scoreLeft.toString()), windowWidth * (1/4), 25 * scaleFactor);
+    ctx.fillText((scoreRight < 10 ? "0" + scoreRight : scoreRight.toString()), windowWidth * (3/4), 25 * scaleFactor);
+  };
+
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Clear canvas
+    ctx.fillStyle = theme === 'light' ? '#fff' : '#111';
+    ctx.fillRect(0, 0, windowWidth, windowHeight);
+    
+    // Update ball position for serves (ball follows paddle)
+    if (gameStateRef.current.leftServe) {
+      ballRef.current.x = xPaddleLeft + paddleWidth + diameter/2;
+      ballRef.current.y = yPaddleLeftRef.current + (0.5 * paddleHeight);
+    }
+    if (gameStateRef.current.rightServe) {
+      ballRef.current.x = xPaddleRight - diameter/2;
+      ballRef.current.y = yPaddleRightRef.current + (0.5 * paddleHeight);
+    }
+    
+    // global pause - when not started or serve in progress
+    if (gameStateRef.current.started) {
+      ballRef.current.x += ballRef.current.xSpeed;
+      ballRef.current.y += ballRef.current.ySpeed;
+    }
+    
+    // Detect collision with left paddle
+    if (
+      ballRef.current.x <= 0 + xPaddleLeft + paddleWidth + borderOffset + (diameter / 2) &&
+      ballRef.current.y < yPaddleLeftRef.current + paddleHeight &&
+      ballRef.current.y >= yPaddleLeftRef.current
+    ) {
+      if (
+        ballRef.current.y >= yPaddleLeftRef.current &&
+        ballRef.current.y < (yPaddleLeftRef.current + (0.5 * paddleHeight))
+      ) {
+        ballRef.current.ySpeed = Math.abs(ballRef.current.ySpeed) * -1;
+        ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed);
+      }
+      if (
+        ballRef.current.y > (yPaddleLeftRef.current + (0.5 * paddleHeight)) &&
+        ballRef.current.y <= (yPaddleLeftRef.current + paddleHeight)
+      ) {
+        ballRef.current.ySpeed = Math.abs(ballRef.current.ySpeed);
+        ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed);
+      }
+    }
+    // points only if behind left wall
+    else if (ballRef.current.x < diameter / 2) {
+      ballRef.current.xSpeed *= -1;
+      const newScore = scoreRight + 1;
+      setScoreRight(newScore);
+      if (!isMobile && newScore === 5) {
+        setFinished(true);
+        return; // Stop drawing to prevent flickering
+      }
+      if (isMobile && newScore === 5) {
+        // Reset scores for infinite play on mobile
+        setScoreRight(0);
+        setScoreLeft(0);
+      }
+      gameStateRef.current.started = false;
+      // put ball for left serve
+      ballRef.current.x = xPaddleLeft + paddleWidth + diameter/2;
+      ballRef.current.y = yPaddleLeftRef.current + (0.5 * paddleHeight);
+      gameStateRef.current.leftServe = true;
+      gameStateRef.current.rightServe = false;
+      resetCPUSpeed();
+    }
+
+    // Detect collision with right paddle
+    if (
+      ballRef.current.x >= windowWidth - borderOffset - paddleWidth - (diameter / 2) &&
+      ballRef.current.y <= yPaddleRightRef.current + paddleHeight &&
+      ballRef.current.y >= yPaddleRightRef.current
+    ) {
+      if (
+        ballRef.current.y >= yPaddleRightRef.current &&
+        ballRef.current.y < (yPaddleRightRef.current + (0.5 * paddleHeight))
+      ) {
+        ballRef.current.ySpeed = Math.abs(ballRef.current.ySpeed) * -1;
+        ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed) * -1;
+      }
+      if (
+        ballRef.current.y > (yPaddleRightRef.current + (0.5 * paddleHeight)) &&
+        ballRef.current.y <= (yPaddleRightRef.current + paddleHeight)
+      ) {
+        ballRef.current.ySpeed = Math.abs(ballRef.current.ySpeed);
+        ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed) * -1;
+      }
+    }
+    // points if behind right wall
+    else if (ballRef.current.x + diameter / 2 > windowWidth) {
+      ballRef.current.xSpeed *= -1;
+      const newScore = scoreLeft + 1;
+      setScoreLeft(newScore);
+      if (!isMobile && newScore === 5) {
+        setFinished(true);
+        return; // Stop drawing to prevent flickering
+      }
+      if (isMobile && newScore === 5) {
+        // Reset scores for infinite play on mobile
+        setScoreRight(0);
+        setScoreLeft(0);
+      }
+      gameStateRef.current.started = false;
+      // put ball for right serve
+      ballRef.current.x = xPaddleRight - diameter/2;
+      ballRef.current.y = yPaddleRightRef.current + (0.5 * paddleHeight);
+      gameStateRef.current.rightServe = true;
+      gameStateRef.current.leftServe = false;
+      setShowServeHint(true); // Show serve hint again for new serve
+      resetCPUSpeed();
+    }
+    
+    bounceTopBottom();
+
+    // Draw paddle left (with rounded corners)
+    ctx.fillStyle = theme === 'light' ? '#111' : '#fff';
+    ctx.beginPath();
+    ctx.roundRect(xPaddleLeft, yPaddleLeftRef.current, paddleWidth, paddleHeight, 4);
+    ctx.fill();
+
+    // Draw paddle right (with rounded corners)
+    ctx.fillStyle = theme === 'light' ? '#111' : '#fff';
+    ctx.beginPath();
+    ctx.roundRect(xPaddleRight, yPaddleRightRef.current, paddleWidth, paddleHeight, 4);
+    ctx.fill();
+
+    drawStaticItems(ctx);
+    
+    // Draw ball (top layer)
+    ctx.fillStyle = theme === 'light' ? '#a06be0' : '#00ff41';
+    ctx.beginPath();
+    ctx.arc(ballRef.current.x, ballRef.current.y, diameter/2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    cpuShouldAction();
+  }, [theme, scoreLeft, scoreRight]);
+
+  const keyPressed = useCallback((e: KeyboardEvent) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Hide serve hint immediately when space is pressed
+      setShowServeHint(false);
+      
+      gameStateRef.current.started = true;
+      if (gameStateRef.current.leftServe) {
+        ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed);
+      }
+      if (gameStateRef.current.rightServe) {
+        ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed) * -1;
+        
+        // Show instructions for 3 seconds after first serve by user
+        if (!hasServedOnce) {
+          setHasServedOnce(true);
+          setShowInstructions(true);
+          setTimeout(() => setShowInstructions(false), 3000);
+        }
+      }
+      gameStateRef.current.leftServe = false;
+      gameStateRef.current.rightServe = false;
+    }
+    if (e.code === 'ArrowUp') {
+      yPaddleRightRef.current -= paddleStep;
+    }
+    if (e.code === 'ArrowDown') {
+      yPaddleRightRef.current += paddleStep;
+    }
+
+    boundToWindow();
+  }, [paddleStep, hasServedOnce]);
+
+  const animate = useCallback(() => {
+    draw();
+    
+    // Auto-serve on mobile (CPU vs CPU)
+    if (isMobile && !gameStateRef.current.started && (gameStateRef.current.leftServe || gameStateRef.current.rightServe)) {
+      setTimeout(() => {
+        gameStateRef.current.started = true;
+        if (gameStateRef.current.leftServe) {
+          ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed);
+        }
+        if (gameStateRef.current.rightServe) {
+          ballRef.current.xSpeed = Math.abs(ballRef.current.xSpeed) * -1;
+        }
+        gameStateRef.current.leftServe = false;
+        gameStateRef.current.rightServe = false;
+      }, 1000); // Auto-serve after 1 second
+    }
+    
+    animationIdRef.current = requestAnimationFrame(animate);
+  }, [draw, isMobile]);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileDevice = window.innerWidth <= 768;
+      setIsMobile(isMobileDevice);
+      
+      if (isMobileDevice) {
+        // Use constant dimensions for mobile to ensure consistent experience
+        const mobileWidth = 280;
+        const mobileHeight = 158; // Maintains 400:225 aspect ratio (280 * 225 / 400)
+        
+        setDimensions({ width: mobileWidth, height: mobileHeight });
+      } else {
+        setDimensions({ width: 400, height: 225 });
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Update paddle and ball positions when dimensions change
+  useEffect(() => {
+    yPaddleLeftRef.current = windowHeight / 2;
+    yPaddleRightRef.current = windowHeight / 2;
+    
+    // Reset ball position for serve
+    const newRightServeXpos = windowWidth - borderOffset - paddleWidth - diameter/2;
+    const newRightServeYpos = windowHeight / 2;
+    
+    ballRef.current.x = newRightServeXpos;
+    ballRef.current.y = newRightServeYpos;
+  }, [windowWidth, windowHeight]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = windowWidth;
+      canvas.height = windowHeight;
+    }
+    
+    animate();
+    window.addEventListener('keydown', keyPressed);
+    
+    return () => {
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
+      }
+      window.removeEventListener('keydown', keyPressed);
+    };
+  }, [animate, keyPressed]);
+
+  if (finished) {
+    return (
+      <div className={`ping-pong-finished ${theme}`}>
+        <>
+          {scoreLeft === 5 ? (
+            <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>I</span>
+          ) : (
+            <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>You</span>
+          )}
+          &nbsp;Won.
+        </>
+      </div>
+    );
+  }
+
+  return (
+    <div className="ping-pong-container">
+      <div className={`ping-pong-game ${theme}`}>
+        <canvas
+          ref={canvasRef}
+          className={`ping-pong-canvas ${theme}`}
+          style={{ border: 'none' }}
+        />
+      </div>
+      
+      <HintText 
+        show={isMobile || (!isMobile && ((showServeHint && !gameStateRef.current.started && gameStateRef.current.rightServe) || showInstructions))}
+        theme={theme}
+      >
+        {isMobile 
+          ? <>Switch to desktop, <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>noob!</span></>
+          : showInstructions 
+            ? <>Use <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>↑</span> and <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>↓</span> arrows to move the paddle</>
+            : (showServeHint && !gameStateRef.current.started && gameStateRef.current.rightServe)
+              ? <>Press <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>SPACE</span> to serve!</>
+              : ''}
+      </HintText>
+    </div>
+  );
+};
+
+export { PingPong };
 export default PingPong;
