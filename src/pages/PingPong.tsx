@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback, ReactNode } from "react";
 import './PingPong.css';
 
 interface PingPongProps {
@@ -8,7 +8,7 @@ interface PingPongProps {
 interface HintTextProps {
   show: boolean;
   theme: 'light' | 'dark';
-  children: string;
+  children: ReactNode;
 }
 
 const HintText = ({ show, theme, children }: HintTextProps) => {
@@ -27,6 +27,10 @@ const PingPong = ({ theme }: PingPongProps) => {
   const [showInstructions, setShowInstructions] = useState(false);
   const [hasServedOnce, setHasServedOnce] = useState(false);
   const [showServeHint, setShowServeHint] = useState(true);
+  const [leftScoreAnimating, setLeftScoreAnimating] = useState(false);
+  const [rightScoreAnimating, setRightScoreAnimating] = useState(false);
+  const [leftScoreOffset, setLeftScoreOffset] = useState(0);
+  const [rightScoreOffset, setRightScoreOffset] = useState(0);
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 768);
   const [dimensions, setDimensions] = useState(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
@@ -147,12 +151,75 @@ const PingPong = ({ theme }: PingPongProps) => {
     ctx.fillStyle = theme === 'light' ? '#ccc' : '#333';
     ctx.fillRect((windowWidth - paddleWidth) / 2, 0, paddleWidth / 2, windowHeight);    
 
-    // Draw scores
-    ctx.fillStyle = theme === 'light' ? '#111' : '#fff';
+    // Draw scores with slider animation
     ctx.font = `${18 * scaleFactor}px monospace`;
     ctx.textAlign = 'center';
-    ctx.fillText((scoreLeft < 10 ? "0" + scoreLeft : scoreLeft.toString()), windowWidth * (1/4), 25 * scaleFactor);
-    ctx.fillText((scoreRight < 10 ? "0" + scoreRight : scoreRight.toString()), windowWidth * (3/4), 25 * scaleFactor);
+    
+    // Draw left score with offset animation
+    const leftY = 25 * scaleFactor;
+    
+    if (leftScoreAnimating) {
+      // Calculate fade progress (0 to 1)
+      const fadeProgress = leftScoreOffset / (20 * scaleFactor);
+      
+      // Draw previous score sliding up with fading opacity
+      const oldAlpha = 1 - fadeProgress;
+      ctx.fillStyle = theme === 'light' ? `rgba(160, 107, 224, ${oldAlpha})` : `rgba(0, 255, 65, ${oldAlpha})`;
+      ctx.fillText(
+        ((scoreLeft - 1) < 10 ? "0" + (scoreLeft - 1) : (scoreLeft - 1).toString()), 
+        windowWidth * (1/4), 
+        leftY - leftScoreOffset
+      );
+      
+      // Draw current score sliding up from below
+      ctx.fillStyle = theme === 'light' ? '#a06be0' : '#00ff41';
+      ctx.fillText(
+        (scoreLeft < 10 ? "0" + scoreLeft : scoreLeft.toString()), 
+        windowWidth * (1/4), 
+        leftY + (20 * scaleFactor) - leftScoreOffset
+      );
+    } else {
+      // Normal static score
+      ctx.fillStyle = theme === 'light' ? '#111' : '#fff';
+      ctx.fillText(
+        (scoreLeft < 10 ? "0" + scoreLeft : scoreLeft.toString()), 
+        windowWidth * (1/4), 
+        leftY
+      );
+    }
+    
+    // Draw right score with offset animation
+    const rightY = 25 * scaleFactor;
+    
+    if (rightScoreAnimating) {
+      // Calculate fade progress (0 to 1)
+      const fadeProgress = rightScoreOffset / (20 * scaleFactor);
+      
+      // Draw previous score sliding up with fading opacity
+      const oldAlpha = 1 - fadeProgress;
+      ctx.fillStyle = theme === 'light' ? `rgba(160, 107, 224, ${oldAlpha})` : `rgba(0, 255, 65, ${oldAlpha})`;
+      ctx.fillText(
+        ((scoreRight - 1) < 10 ? "0" + (scoreRight - 1) : (scoreRight - 1).toString()), 
+        windowWidth * (3/4), 
+        rightY - rightScoreOffset
+      );
+      
+      // Draw current score sliding up from below
+      ctx.fillStyle = theme === 'light' ? '#a06be0' : '#00ff41';
+      ctx.fillText(
+        (scoreRight < 10 ? "0" + scoreRight : scoreRight.toString()), 
+        windowWidth * (3/4), 
+        rightY + (20 * scaleFactor) - rightScoreOffset
+      );
+    } else {
+      // Normal static score
+      ctx.fillStyle = theme === 'light' ? '#111' : '#fff';
+      ctx.fillText(
+        (scoreRight < 10 ? "0" + scoreRight : scoreRight.toString()), 
+        windowWidth * (3/4), 
+        rightY
+      );
+    }
   };
 
   const draw = useCallback(() => {
@@ -208,6 +275,36 @@ const PingPong = ({ theme }: PingPongProps) => {
       ballRef.current.xSpeed *= -1;
       const newScore = scoreRight + 1;
       setScoreRight(newScore);
+      
+      // Start slide animation
+      setRightScoreAnimating(true);
+      setRightScoreOffset(0);
+      
+      // Animate the slide with easing
+      let startTime: number | null = null;
+      const duration = 600; // Slower 600ms duration
+      const targetOffset = 20 * scaleFactor;
+      
+      const animateSlide = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease-out cubic function for smoother animation
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const newOffset = easeProgress * targetOffset;
+        
+        setRightScoreOffset(newOffset);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateSlide);
+        } else {
+          setRightScoreAnimating(false);
+          setRightScoreOffset(0);
+        }
+      };
+      requestAnimationFrame(animateSlide);
+      
       if (!isMobile && newScore === 5) {
         setFinished(true);
         return; // Stop drawing to prevent flickering
@@ -252,6 +349,36 @@ const PingPong = ({ theme }: PingPongProps) => {
       ballRef.current.xSpeed *= -1;
       const newScore = scoreLeft + 1;
       setScoreLeft(newScore);
+      
+      // Start slide animation
+      setLeftScoreAnimating(true);
+      setLeftScoreOffset(0);
+      
+      // Animate the slide with easing
+      let startTime: number | null = null;
+      const duration = 600; // Slower 600ms duration
+      const targetOffset = 20 * scaleFactor;
+      
+      const animateSlide = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease-out cubic function for smoother animation
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const newOffset = easeProgress * targetOffset;
+        
+        setLeftScoreOffset(newOffset);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateSlide);
+        } else {
+          setLeftScoreAnimating(false);
+          setLeftScoreOffset(0);
+        }
+      };
+      requestAnimationFrame(animateSlide);
+      
       if (!isMobile && newScore === 5) {
         setFinished(true);
         return; // Stop drawing to prevent flickering
@@ -294,12 +421,40 @@ const PingPong = ({ theme }: PingPongProps) => {
     ctx.fill();
     
     cpuShouldAction();
-  }, [theme, scoreLeft, scoreRight]);
+  }, [theme, scoreLeft, scoreRight, leftScoreAnimating, rightScoreAnimating, leftScoreOffset, rightScoreOffset]);
 
   const keyPressed = useCallback((e: KeyboardEvent) => {
     if (e.code === 'Space') {
       e.preventDefault();
       e.stopPropagation();
+      
+      // If game is finished, restart it
+      if (finished) {
+        setFinished(false);
+        setScoreLeft(0);
+        setScoreRight(0);
+        setHasServedOnce(false);
+        setShowServeHint(true);
+        setShowInstructions(false);
+        
+        // Reset game state
+        gameStateRef.current.started = false;
+        gameStateRef.current.leftServe = false;
+        gameStateRef.current.rightServe = true;
+        resetCPUSpeed();
+        
+        // Reset ball position
+        ballRef.current.x = windowWidth - borderOffset - paddleWidth - diameter/2;
+        ballRef.current.y = windowHeight / 2;
+        ballRef.current.xSpeed = 2;
+        ballRef.current.ySpeed = 2;
+        
+        // Reset paddle positions
+        yPaddleLeftRef.current = windowHeight / 2;
+        yPaddleRightRef.current = windowHeight / 2;
+        
+        return;
+      }
       
       // Hide serve hint immediately when space is pressed
       setShowServeHint(false);
@@ -407,15 +562,24 @@ const PingPong = ({ theme }: PingPongProps) => {
 
   if (finished) {
     return (
-      <div className={`ping-pong-finished ${theme}`}>
-        <>
-          {scoreLeft === 5 ? (
-            <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>I</span>
-          ) : (
-            <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>You</span>
-          )}
-          &nbsp;Won.
-        </>
+      <div className="ping-pong-container">
+        <div className={`ping-pong-finished ${theme}`}>
+          <>
+            {scoreLeft === 5 ? (
+              <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>I won,</span>
+            ) : (
+              <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>I am</span>
+            )}
+            &nbsp;Noob!
+          </>
+        </div>
+        
+        <HintText 
+          show={true}
+          theme={theme}
+        >
+          Press <span style={{ color: theme === 'light' ? '#a06be0' : '#00ff41' }}>SPACE</span> to replay
+        </HintText>
       </div>
     );
   }
