@@ -95,3 +95,173 @@
     display: none;
   }
 }
+
+/* History page specific styles */
+
+.history-container {
+  padding: 0;
+}
+
+.history-intro {
+  margin-bottom: 1.5rem;
+}
+
+.holocene-calendar {
+  color: var(--accent-color, #007acc);
+  text-decoration: none;
+}
+
+.holocene-calendar:hover {
+  text-decoration: underline;
+}
+
+.section-title {
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.secondary-text {
+  color: var(--secondary-text-color, #666);
+}
+
+/* Work experience and education lists */
+.history-list {
+  margin: 0.5em 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.history-item {
+  list-style-type: none;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: normal;
+  transition: font-weight 0.15s ease;
+}
+
+.history-item.expanded {
+  font-weight: bold;
+}
+
+.history-arrow {
+  min-width: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  height: 2em;
+  transition: transform 0.18s ease;
+}
+
+.history-arrow.open {
+  transform: rotate(90deg);
+}
+
+.history-arrow svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.history-date {
+  min-width: 12em;
+  display: inline-block;
+}
+
+.history-company {
+  min-width: 13em;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-position {
+  display: inline;
+}
+
+.edu-degree {
+  display: inline;
+}
+
+.history-details {
+  list-style-type: none;
+  padding-left: 2em;
+  margin-bottom: 0.5em;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.18s ease;
+}
+
+.history-details.open {
+  max-height: 1000px;
+}
+
+.history-details-list {
+  margin: 0 0 0.7em 0;
+  padding-left: 1.5em;
+}
+
+.history-details-item {
+  margin-bottom: 0.2em;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+}
+
+.history-bullet {
+  margin-right: 0.6em;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.history-subexp {
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.history-subdesc {
+  padding-left: 1.5em;
+}
+
+.edu-subdesc-title {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+  .history-date {
+    min-width: 8em;
+    font-size: 0.9em;
+    margin-right: 0.8em;
+  }
+  
+  .history-company {
+    min-width: 10em;
+    font-size: 0.9em;
+  }
+  
+  .history-position,
+  .edu-degree {
+    display: none;
+  }
+  
+  .history-details {
+    padding-left: 1.5em;
+  }
+  
+  .history-subexp .history-date {
+    min-width: 8em;
+    font-size: 0.9em;
+  }
+  
+  .history-subexp .history-company {
+    min-width: 10em;
+    font-size: 0.9em;
+  }
+}

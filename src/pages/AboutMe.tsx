@@ -1,6 +1,7 @@
 import React from 'react';
 import './shared.css';
 import './history.css';
+import './aboutme.css';
 
 const AboutMe = () => (
   <div className="section-content">
@@ -27,30 +28,30 @@ const AboutMe = () => (
 
     <h2><span className="secondary-text">If</span> not in front of a terminal, I’m,</h2>
     <p>
-      <ul style={{ marginTop: '0.5em', marginBottom: '0.5em' }}>
-        <li style={{ listStyleType: 'none', display: 'flex', alignItems: 'center' }}>
-          <span className="secondary-text" style={{ display: 'inline-flex', alignItems: 'center', marginRight: '0.4em' }}>
-            <svg width="20" height="20" viewBox="0 0 20 20" style={{ display: 'block' }}>
+      <ul className="activities-list">
+        <li className="activity-item">
+          <span className="secondary-text activity-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20">
               <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          Hiking and exploring trails ⛰️
+          Hiking and exploring trails ⛰️.
         </li>
-        <li style={{ listStyleType: 'none', display: 'flex', alignItems: 'center' }}>
-          <span className="secondary-text" style={{ display: 'inline-flex', alignItems: 'center', marginRight: '0.4em' }}>
-            <svg width="20" height="20" viewBox="0 0 20 20" style={{ display: 'block' }}>
+        <li className="activity-item">
+          <span className="secondary-text activity-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20">
               <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          Chasing sunsets 🌅
+          Chasing sunsets 🌅.
         </li>
-        <li style={{ listStyleType: 'none', display: 'flex', alignItems: 'center' }}>
-          <span className="secondary-text" style={{ display: 'inline-flex', alignItems: 'center', marginRight: '0.4em' }}>
-            <svg width="20" height="20" viewBox="0 0 20 20" style={{ display: 'block' }}>
+        <li className="activity-item">
+          <span className="secondary-text activity-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20">
               <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          Getting lost in nature with a camera 📷
+          Getting lost in nature with a camera 📷.
         </li>
       </ul>
     </p>
