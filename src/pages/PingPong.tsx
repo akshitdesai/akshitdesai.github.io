@@ -63,8 +63,8 @@ const PingPong = ({ theme }: PingPongProps) => {
   const ballRef = useRef({
     x: rightServeXpos,
     y: rightServeYpos,
-    xSpeed: 2,
-    ySpeed: 2
+    xSpeed: 4,
+    ySpeed: 4
   });
    
   const gameStateRef = useRef({
@@ -446,8 +446,8 @@ const PingPong = ({ theme }: PingPongProps) => {
         // Reset ball position
         ballRef.current.x = windowWidth - borderOffset - paddleWidth - diameter/2;
         ballRef.current.y = windowHeight / 2;
-        ballRef.current.xSpeed = 2;
-        ballRef.current.ySpeed = 2;
+        ballRef.current.xSpeed = 4;
+        ballRef.current.ySpeed = 4;
         
         // Reset paddle positions
         yPaddleLeftRef.current = windowHeight / 2;

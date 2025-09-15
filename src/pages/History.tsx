@@ -32,6 +32,7 @@ interface Edu {
   institute: string;
   colorN: number;
   degree: string;
+  colorND: number;
   description?: string[];
   subDescription?: {
     title: string;
