@@ -248,7 +248,9 @@
   
   .history-position,
   .edu-degree {
-    display: none;
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 0.5em;
   }
   
   .history-details {
@@ -263,5 +265,11 @@
   .history-subexp .history-company {
     min-width: 10em;
     font-size: 0.9em;
+  }
+  
+  .history-subexp .history-position {
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 0.5em;
   }
 }

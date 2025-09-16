@@ -183,9 +183,11 @@ const History = ({ theme }: HistoryProps) => {
                 {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
                   ? <>{colorFirstN(ed.institute,  ed.colorN)}</>
                   : ed.institute}
-                <span className="edu-degree">, {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
+              </span>
+              <span className="history-position edu-degree">
+                {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
                   ? <>{colorFirstN(ed.degree, ed.colorND)}</>
-                  : ed.degree}</span>
+                  : ed.degree}
               </span>
             </li>
             <li
