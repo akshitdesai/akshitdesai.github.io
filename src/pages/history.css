@@ -253,6 +253,10 @@
     margin-left: 0.5em;
   }
   
+  .edu-degree::before {
+    content: "";
+  }
+  
   .history-details {
     padding-left: 1.5em;
   }
@@ -265,6 +269,12 @@
   .history-subexp .history-company {
     min-width: 10em;
     font-size: 0.9em;
+  }
+  
+  .history-subexp .history-position {
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 0.5em;
   }
   
   .history-subexp .history-position {

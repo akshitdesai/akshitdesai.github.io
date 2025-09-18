@@ -43,10 +43,18 @@ interface Edu {
 const History = ({ theme }: HistoryProps) => {
   const [workexp, setWorkexp] = useState<WorkExp[]>([]);
   const [edu, setEdu] = useState<Edu[]>([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
 
   useEffect(() => {
     setWorkexp(workexpData);
     setEdu(eduData);
+    
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // single toggle state: { type: 'workexp' | 'edu', idx: number } | null
@@ -179,13 +187,13 @@ const History = ({ theme }: HistoryProps) => {
                   : ed.startDate}
                 -{ed.endDate}
               </span>
-              <span className="history-company">
+              <span className="history-company history-institute">
                 {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
                   ? <>{colorFirstN(ed.institute,  ed.colorN)}</>
                   : ed.institute}
               </span>
               <span className="history-position edu-degree">
-                {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
+                {!isMobile && ', '}{openIdx && openIdx.type === 'edu' && openIdx.idx === idx
                   ? <>{colorFirstN(ed.degree, ed.colorND)}</>
                   : ed.degree}
               </span>
