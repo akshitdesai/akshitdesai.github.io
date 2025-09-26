@@ -26,8 +26,8 @@ const AboutMe = () => (
       This site is the center of my online presence. 
     </p> */}
 
-    <h2><span className="secondary-text">If</span> not in front of a terminal, I’m,</h2>
-    <p>
+    <h2><span className="secondary-text">If</span> not in front of a terminal, I'm,</h2>
+    <div>
       <ul className="activities-list">
         <li className="activity-item">
           <span className="secondary-text activity-icon">
@@ -54,9 +54,7 @@ const AboutMe = () => (
           Getting lost in nature with a camera 📷.
         </li>
       </ul>
-    </p>
-
-    <h3><span className="secondary-text">No promises</span> I'm actually good at anything.</h3>
+    </div>    <h3><span className="secondary-text">No promises</span> I'm actually good at anything.</h3>
   </div>
 );
 

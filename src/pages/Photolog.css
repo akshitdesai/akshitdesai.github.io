@@ -1,0 +1,256 @@
+.photolog-container.light {
+	color: #111;
+}
+
+.photolog-container.dark {
+	color: #fff;
+}
+
+.photolog-container.light .secondary {
+	color: #a06be0 !important;
+}
+
+.photolog-container.dark .secondary {
+	color: #00ff41 !important;
+}
+
+/* Holocene Calendar theme-aware styles */
+.photolog-container.light .holocene-calendar {
+	color: #111;
+}
+.photolog-container.dark .holocene-calendar {
+	color: #fff;
+}
+
+.photolog-container.light .holocene-calendar:hover {
+	color: #a06be0;
+}
+.photolog-container.dark .holocene-calendar:hover {
+	color: #00ff41;
+}
+
+/* Holocene Calendar intro section - positioned below menu bar */
+.photolog-container .holocene-intro {
+  position: fixed;
+  top: 160px; /* Below the menu bar */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 900px;
+  width: 100%;
+  padding-left: 2rem;
+  z-index: 90;
+  margin: 0;
+  text-align: left;
+}
+
+/* Fixed title below intro section */
+.photolog-container .section-title {
+  position: fixed;
+  top: 190px; /* Reduced space above the title */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 900px;
+  width: 100%;
+  padding-left: 2rem;
+  z-index: 90;
+  margin: 0;
+  text-align: left;
+}
+
+/* Content positioned below fixed elements with proper spacing */
+.photolog-container .section-content {
+  position: relative;
+  max-width: 1200px; /* Increased width for two-panel layout */
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 2rem;
+  margin-top: 120px; /* Reduced space for fixed intro and title sections */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start !important; /* Override global center alignment */
+  min-height: auto !important; /* Override global min-height */
+}
+
+/* Vertical layout - Map first, then location list */
+.photolog-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Map section - Full width */
+.photolog-map-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 500px;
+}
+
+/* Location list section */
+.photolog-list-section {
+  width: 100%;
+  max-width: 800px; /* Limit width for readability */
+  margin: 0 auto; /* Center the list */
+}
+
+/* No selection state */
+.no-selection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: inherit;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* Dates container */
+.location-dates-container {
+  margin-top: 0; /* Remove top margin completely */
+  text-align: center;
+  width: 100%;
+}
+
+.dates-text {
+  margin: 0;
+  font-size: 0.9rem; /* Smaller font size for dates */
+  line-height: 1.5;
+  max-width: 350px;
+  margin: 0 auto;
+  word-wrap: break-word;
+}
+
+.photolog-container.light .dates-text {
+  color: #111; /* Primary color for light theme */
+}
+
+.photolog-container.dark .dates-text {
+  color: #fff; /* Primary color for dark theme */
+}
+
+/* Holocene calendar info text */
+.holocene-info {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-style: italic;
+  max-width: 600px; /* Increased from 350px to allow single line */
+  margin-left: auto;
+  margin-right: auto;
+  white-space: nowrap; /* Prevent text wrapping on desktop */
+}
+
+.photolog-container.light .holocene-info {
+  color: #111;
+}
+
+.photolog-container.dark .holocene-info {
+  color: #fff;
+}
+
+.holocene-info .holocene-calendar {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.holocene-info .holocene-calendar:hover {
+  opacity: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .photolog-layout {
+    gap: 0.75rem; /* Reduced from 1.5rem to 0.75rem */
+  }
+  
+  .photolog-list-section {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .photolog-container .section-content {
+    max-width: 900px;
+    padding-left: 1rem;
+  }
+  
+  .photolog-container .location-map-container {
+    padding: 0 1rem; /* Add padding on mobile */
+  }
+  
+  /* Allow text wrapping on mobile for better readability */
+  .holocene-info {
+    white-space: normal;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .photolog-container .location-map-container {
+    padding: 0 2rem; /* Ensure map doesn't touch edges on medium screens */
+  }
+}
+
+/* Override history.css styles specifically for photolog */
+.photolog-container .history-list {
+  margin: 0.5em 0;
+  padding-left: 0;
+  list-style: none;
+  position: static; /* Ensure static positioning */
+}
+
+.photolog-container .history-item {
+  list-style-type: none;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: normal;
+  transition: font-weight 0.15s ease;
+  position: relative; /* Ensure relative positioning */
+}
+
+.photolog-container .history-details {
+  list-style-type: none;
+  padding-left: 2em;
+  margin-bottom: 0.5em;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.18s ease;
+  position: relative; /* Ensure relative positioning */
+}
+
+.photolog-container .history-details.open {
+  max-height: 1000px;
+}
+
+/* Map container styling - Full width, left aligned */
+.photolog-container .location-map-container {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden; /* Ensure map doesn't overflow container */
+}
+
+/* Inherit history list styles from shared.css and history.css */
+
+/* Inline dates styling for selected locations */
+.location-dates-inline {
+  margin-left: 1rem;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.photolog-container.light .location-dates-inline {
+  color: #666;
+}
+
+.photolog-container.dark .location-dates-inline {
+  color: #ccc;
+}

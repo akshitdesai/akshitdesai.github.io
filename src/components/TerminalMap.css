@@ -1,0 +1,194 @@
+/* Terminal Map Container Styling */
+.terminal-map-container {
+  border: 2px solid;
+  border-radius: 4px;
+  overflow: hidden;
+  background: transparent;
+  max-width: 100%; /* Ensure it doesn't overflow parent */
+  width: fit-content; /* Make container fit the map size exactly */
+  margin: 0 auto; /* Center horizontally, no top/bottom margin */
+  transition: all 0.3s ease; /* Smooth transitions for map changes */
+}
+
+/* No border variant */
+.terminal-map-container.no-border {
+  border: none;
+  border-radius: 0;
+}
+
+.terminal-map-light {
+  border-color: #a06be0;
+  background-color: #fff;
+}
+
+.terminal-map-dark {
+  border-color: #00ff41;
+  background-color: #111;
+}
+
+/* Map Base Styling */
+.terminal-map {
+  display: block;
+  width: 100%;
+}
+
+/* Remove default Leaflet styling and apply terminal theme */
+.terminal-tiles-light {
+  filter: grayscale(60%) contrast(1.2) brightness(1.1) sepia(10%) hue-rotate(240deg);
+  opacity: 0.8;
+}
+
+.terminal-tiles-dark {
+  filter: invert(1) grayscale(100%) contrast(0.9) brightness(1.1) !important;
+  opacity: 0.9 !important;
+}
+
+/* Custom Marker Styling */
+.terminal-marker-container {
+  background: none !important;
+  border: none !important;
+}
+
+.terminal-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  opacity: 0.55; /* Increased opacity for better marker visibility */
+}
+
+.terminal-marker-light {
+  background-color: #a06be0;
+  border-color: #fff;
+  box-shadow: 0 0 4px rgba(160, 107, 224, 0.5);
+}
+
+.terminal-marker-dark {
+  background-color: #00ff41;
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
+}
+
+/* Country Highlight Styling for World Map */
+.terminal-country-container {
+  background: none !important;
+  border: none !important;
+}
+
+.terminal-country-highlight {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  opacity: 0.7;
+  animation: pulse 2s infinite;
+}
+
+.terminal-country-highlight-light {
+  background-color: rgba(160, 107, 224, 0.3);
+  border-color: #a06be0;
+  box-shadow: 0 0 8px rgba(160, 107, 224, 0.6);
+}
+
+.terminal-country-highlight-dark {
+  background-color: rgba(0, 255, 65, 0.3);
+  border-color: #00ff41;
+  box-shadow: 0 0 8px rgba(0, 255, 65, 0.6);
+}
+
+/* Subtle pulse animation for country highlights */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
+
+/* Hide attribution and zoom controls */
+.terminal-map .leaflet-control-container {
+  display: none !important;
+}
+
+/* Tooltip Styling */
+.terminal-tooltip {
+  background: transparent !important;
+  border: 2px solid;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: none !important;
+}
+
+.terminal-tooltip-light {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #a06be0;
+  color: #a06be0;
+}
+
+.terminal-tooltip-dark {
+  background-color: rgba(17, 17, 17, 0.95) !important;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.terminal-tooltip::before {
+  display: none !important;
+}
+
+/* Ensure map blends with background */
+.terminal-map-light .leaflet-container {
+  background-color: #fff !important;
+}
+
+.terminal-map-dark .leaflet-container {
+  background-color: #000 !important;
+}
+
+/* Loading overlay and animation */
+.terminal-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 4px;
+}
+
+.terminal-loading-light {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #a06be0;
+}
+
+.terminal-loading-dark {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #00ff41;
+}
+
+.terminal-loading-globe .globe-svg {
+  animation: rotate-globe 2s linear infinite;
+  color: inherit;
+}
+
+@keyframes rotate-globe {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Force dark theme to show map details in white/grey */
+.terminal-map-dark .leaflet-tile-pane,
+.terminal-map-dark .leaflet-tile,
+.terminal-map-dark .leaflet-layer {
+  filter: invert(1) grayscale(100%) contrast(1.0) brightness(1.1) !important;
+}
+
+.terminal-map-dark .leaflet-marker-pane {
+  visibility: visible !important;
+}

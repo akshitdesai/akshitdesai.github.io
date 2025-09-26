@@ -1,0 +1,36 @@
+{
+  "visitedCountries": [
+    {
+      "country": "India",
+      "countryCode": "IN",
+      "nameVariations": [
+        "india"
+      ]
+    },
+    {
+      "country": "Canada",
+      "countryCode": "CA",
+      "nameVariations": [
+        "canada"
+      ]
+    },
+    {
+      "country": "United Arab Emirates",
+      "countryCode": "AE",
+      "nameVariations": [
+        "united arab emirates",
+        "uae",
+        "emirates"
+      ]
+    },
+    {
+      "country": "United States",
+      "countryCode": "US",
+      "nameVariations": [
+        "united states",
+        "united states of america",
+        "usa"
+      ]
+    }
+  ]
+}
