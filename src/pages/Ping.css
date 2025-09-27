@@ -1,0 +1,29 @@
+/* Platform link colors */
+.App.light .platform-link-unselected {
+	color: #666;
+}
+
+.App.dark .platform-link-unselected {
+	color: #999;
+}
+
+/* Platform link hover colors using secondary theme colors */
+.App.light .platform-link-unselected:hover,
+.App.light .platform-link-unselected.hovered {
+	color: #a06be0;
+}
+
+.App.dark .platform-link-unselected:hover,
+.App.dark .platform-link-unselected.hovered {
+	color: #00ff41;
+}
+
+/* Fixed margin for ping heading */
+.ping-heading {
+	margin-top: 2em;
+}
+
+/* Center the platform links paragraph */
+.platform-links-paragraph {
+	text-align: center;
+}

@@ -133,22 +133,21 @@ const Photolog = ({ theme }: PhotologProps) => {
                   <span className="secondary">Loading...</span>
                 </div>
               )}
+              {!isTransitioning && (openIdx === null && previousIdx === null) && (
+                <div className="map-overlay-text" style={{
+                  position: 'absolute',
+                  bottom: '30px',
+                  left: '80px',
+                  color: 'var(--text-color)',
+                  fontSize: '14px',
+                  zIndex: 5
+                }}>
+                  Countries I've been to. <span className="secondary">■</span>
+                </div>
+              )}
             </div>
-            {!isTransitioning && (openIdx === null && previousIdx === null) && (
-              <div className="location-dates-container">
-                <p className="holocene-info">
-                  Countries I've been to.{' '}
-                  <span className="secondary">■</span>
-                </p>
-              </div>
-            )}
-            {(openIdx !== null || (isTransitioning && previousIdx !== null)) && (
-              <div className="location-dates-container">
-                <p className="holocene-info">
-                  Dates use the <a className="holocene-calendar" href="https://en.wikipedia.org/wiki/Holocene_calendar"> Holocene Calendar</a> — <a className="holocene-calendar" href="https://www.youtube.com/web?v=czgOWmtGVGs">the Human Era</a>.
-                </p>
-              </div>
-            )}
+            <div className="location-dates-container">
+            </div>
           </div>
 
           {/* Location List Section */}
@@ -186,10 +185,13 @@ const Photolog = ({ theme }: PhotologProps) => {
             </ul>
             {/* Legend for based out of locations */}
             <div className="location-legend">
-              <p className="holocene-info">
-                <strong className="secondary">bold</strong>: dates I've been based out of.{' '}
+                <>
+                    Dates use the <a className="holocene-calendar" href="https://en.wikipedia.org/wiki/Holocene_calendar"> Holocene Calendar</a> — <a className="holocene-calendar" href="https://www.youtube.com/web?v=czgOWmtGVGs">the Human Era</a>.
+                </> 
+                <br/>
+                <br/>
+                <strong>bold</strong>: dates I've been based out of.{' '}
                 <span className="secondary">■</span>
-              </p>
             </div>
           </div>
         </div>

@@ -14,5 +14,13 @@
   {
     "platform": "Email",
     "link": "mailto:akshitdesai@duck.com"
+  },
+  {
+    "platform": "GitHub",
+    "link": "https://github.com/akshitdesai"
+  },
+  {
+    "platform": "akshitdesai.me",
+    "link": "https://akshitdesai.me"
   }
 ]

@@ -1,24 +1,61 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import pingData from '../data/ping.json';
 import PingPong from './PingPong';
+import './Ping.css';
 
 interface PingProps {
   theme: 'light' | 'dark';
 }
 
 const Ping: React.FC<PingProps> = ({ theme }) => {
+  const [hoveredPlatform, setHoveredPlatform] = useState<string | null>(null);
+
+  // Create multiple randomized lists once on initial load
+  const randomizedLists = useMemo(() => {
+    const createShuffledList = () => [...pingData].sort(() => Math.random() - 0.5);
+    return Array.from({ length: 6 }, () => createShuffledList());
+  }, []);
+
+  const renderPlatformLinks = (listIndex: number, showSpacing: boolean = true) => {
+    const shuffledData = randomizedLists[listIndex];
+    
+    return (
+      <>
+        {shuffledData.map((item, idx) => (
+          <span key={`${listIndex}-${item.platform}-${idx}`}>
+            <a 
+              className={`holocene-calendar platform-link-unselected ${hoveredPlatform === item.platform.toLowerCase() ? 'hovered' : ''}`}
+              href={item.link} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onMouseEnter={() => setHoveredPlatform(item.platform.toLowerCase())}
+              onMouseLeave={() => setHoveredPlatform(null)}
+              style={{
+                textDecoration: hoveredPlatform === item.platform.toLowerCase() ? 'underline' : 'none',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {item.platform.toLowerCase()}
+            </a>
+            {idx < shuffledData.length - 1 && showSpacing && ' '}
+          </span>
+        ))}
+      </>
+    );
+  };
+
   return (
     <div className="section-content">
-      <h2><span className="secondary-text">ping</span> me</h2>
-      <ul style={{ marginTop: '0.1em', marginBottom: '1em', listStyle: 'none', paddingLeft: 0 }}>
-        {pingData.map((item, idx) => (
-          <li key={idx} style={{ marginBottom: '0.7em' }}>
-            <a className="holocene-calendar" href={item.link} target="_blank" rel="noopener noreferrer">
-              {item.platform}
-            </a>
-          </li>
+      <h2 className="ping-heading"><span className="secondary-text">ping</span> me</h2>
+      <p className="platform-links-paragraph" style={{ marginTop: '0.5em', marginBottom: '1.5em', lineHeight: 1.6 }}>
+        {Array.from({ length: randomizedLists.length }, (_, n) => (
+          <span key={`first-loop-${n}`}>
+            {n === Math.floor(randomizedLists.length / 2) && <strong>{' '}<span className="secondary-text">ak</span>$hit</strong>}
+            {' '}
+            {renderPlatformLinks(n)}
+          </span>
         ))}
-      </ul>
+      </p>
       
       <h2><span className="secondary-text">ping</span> pong!</h2>
       <PingPong theme={theme} />
