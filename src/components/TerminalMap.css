@@ -105,9 +105,50 @@
   100% { transform: scale(1); opacity: 0.7; }
 }
 
-/* Hide attribution and zoom controls */
-.terminal-map .leaflet-control-container {
+/* Hide attribution and style zoom controls */
+.terminal-map .leaflet-control-container .leaflet-control-attribution {
   display: none !important;
+}
+
+/* Style zoom controls for terminal theme */
+.terminal-map-light .leaflet-control-zoom {
+  border: 2px solid #a06be0 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.terminal-map-light .leaflet-control-zoom a {
+  background-color: #fff !important;
+  color: #a06be0 !important;
+  border: none !important;
+  font-weight: bold !important;
+  font-family: 'Courier New', monospace !important;
+}
+
+.terminal-map-light .leaflet-control-zoom a:hover {
+  background-color: #a06be0 !important;
+  color: #fff !important;
+}
+
+.terminal-map-dark .leaflet-control-zoom {
+  border: 2px solid #00ff41 !important;
+  border-radius: 4px !important;
+  background: #111 !important;
+  box-shadow: none !important;
+}
+
+.terminal-map-dark .leaflet-control-zoom a {
+  background-color: #111 !important;
+  color: #00ff41 !important;
+  border: none !important;
+  font-weight: bold !important;
+  font-family: 'Courier New', monospace !important;
+}
+
+.terminal-map-dark .leaflet-control-zoom a:hover {
+  background-color: #00ff41 !important;
+  color: #111 !important;
 }
 
 /* Tooltip Styling */

@@ -4,8 +4,8 @@ import './shared.css';
 import './history.css';
 import photologData from '../data/photolog.json';
 import visitedData from '../data/visited.json';
-import TerminalMap from '../components/TerminalMap.tsx';
-import PhotoGallery from '../components/PhotoGallery.tsx';
+import TerminalMap from '../components/TerminalMap';
+import PhotoGallery from '../components/PhotoGallery';
 
 interface PhotologProps {
   theme: 'light' | 'dark';
@@ -15,7 +15,7 @@ interface PhotologLocation {
   location: string;
   colorN: number;
   coordinates: { lat: number; lng: number }[];
-  dates: string[];
+  dates: { date: string; basedOutOf: boolean }[];
 }
 
 const Photolog = ({ theme }: PhotologProps) => {
@@ -65,6 +65,24 @@ const Photolog = ({ theme }: PhotologProps) => {
       <span className="secondary">{text.slice(0, n)}</span>{text.slice(n)}
     </>
   );
+
+  // Utility to render dates with primary color first character for basedOutOf dates
+  const renderDates = (dates: { date: string; basedOutOf: boolean }[], className: string) => (
+    <span className={className}>
+      {dates.map((dateObj, index) => (
+        <span key={index}>
+          {dateObj.basedOutOf ? 
+            <><span className="secondary">{dateObj.date.charAt(0)}</span>{dateObj.date.slice(1)}</> 
+            : dateObj.date}
+          {index < dates.length - 1 ? ', ' : ''}
+        </span>
+      ))}
+    </span>
+  );
+
+  // Check if location has any basedOutOf dates
+  const hasBasedOutOfDates = (dates: { date: string; basedOutOf: boolean }[]) => 
+    dates.some(dateObj => dateObj.basedOutOf);
 
   return (
     <div className={`photolog-container ${theme}`}>
@@ -119,7 +137,7 @@ const Photolog = ({ theme }: PhotologProps) => {
             {!isTransitioning && (openIdx === null && previousIdx === null) && (
               <div className="location-dates-container">
                 <p className="holocene-info">
-                  Countries I've been to{' '}
+                  Countries I've been to.{' '}
                   <span className="secondary">■</span>
                 </p>
               </div>
@@ -158,14 +176,21 @@ const Photolog = ({ theme }: PhotologProps) => {
                       </svg>
                     )}
                   </span>
-                  <span className="history-company">
+                  <span className={`history-company ${hasBasedOutOfDates(loc.dates) ? 'based-out-of' : ''}`}>
                     {openIdx === idx
-                      ? <>{colorFirstN(loc.location, loc.colorN)} - {loc.dates.join(', ')}</>
-                      : loc.location}
+                      ? <>{colorFirstN(loc.location, loc.colorN)} - {renderDates(loc.dates, "location-dates-selected")}</>
+                      : <>{loc.location} - {renderDates(loc.dates, "location-dates-unselected")}</>}
                   </span>
                 </li>
               ))}
             </ul>
+            {/* Legend for based out of locations */}
+            <div className="location-legend">
+              <p className="holocene-info">
+                <strong className="secondary">bold</strong>: dates I've been based out of.{' '}
+                <span className="secondary">■</span>
+              </p>
+            </div>
           </div>
         </div>
         

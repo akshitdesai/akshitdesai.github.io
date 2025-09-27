@@ -3,6 +3,19 @@ import './projectree.css';
 
 import projectsData from '../data/projects.json';
 
+interface Project {
+  name: string;
+  github: string;
+  live?: string;
+  description: string;
+}
+
+interface Category {
+  category: string;
+  colorN: number;
+  projects: Project[];
+}
+
 interface ProjectreeProps {
   theme: string;
 }
@@ -49,7 +62,7 @@ const LiveIcon = () => (
 );
 
 const Projectree = ({ theme }: ProjectreeProps) => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     setCategories(projectsData);
   }, []);

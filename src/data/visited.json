@@ -1,13 +1,6 @@
 {
   "visitedCountries": [
     {
-      "country": "India",
-      "countryCode": "IN",
-      "nameVariations": [
-        "india"
-      ]
-    },
-    {
       "country": "Canada",
       "countryCode": "CA",
       "nameVariations": [

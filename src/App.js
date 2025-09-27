@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import AboutMe from './pages/AboutMe.tsx';
-import History from './pages/History.tsx';
-import Projectree from './pages/Projectree.tsx';
-import Ping from './pages/Ping.tsx';
-import Photolog from './pages/Photolog.tsx';
+import AboutMe from './pages/AboutMe';
+import History from './pages/History';
+import Projectree from './pages/Projectree';
+import Ping from './pages/Ping';
+import Photolog from './pages/Photolog';
 import MobileMenu from './components/MobileMenu';
 import ThemeToggle from './components/ThemeToggle';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './TerminalMap.css';
@@ -49,7 +49,30 @@ const calculateMapZoom = (coordinates: { lat: number; lng: number }[], isWorldMa
     return defaultZoom || 10;
   }
   
-  return (defaultZoom || 10) - 1;
+  // For multiple coordinates, calculate bounds and determine zoom to fit all markers
+  const lats = coordinates.map(coord => coord.lat);
+  const lngs = coordinates.map(coord => coord.lng);
+  
+  const latMin = Math.min(...lats);
+  const latMax = Math.max(...lats);
+  const lngMin = Math.min(...lngs);
+  const lngMax = Math.max(...lngs);
+  
+  const latSpan = latMax - latMin;
+  const lngSpan = lngMax - lngMin;
+  
+  // Calculate zoom based on the span - larger spans need lower zoom levels
+  const maxSpan = Math.max(latSpan, lngSpan);
+  
+  if (maxSpan > 10) return 3;  // Very large area (cross-continent)
+  if (maxSpan > 5) return 4;   // Large area (multiple provinces/states)
+  if (maxSpan > 2) return 5;   // Medium-large area
+  if (maxSpan > 1) return 6;   // Medium area
+  if (maxSpan > 0.5) return 7; // Smaller area
+  if (maxSpan > 0.2) return 8; // Small area
+  if (maxSpan > 0.1) return 9; // Very small area
+  
+  return Math.max(6, (defaultZoom || 10) - 2); // Default fallback with minimum zoom of 6
 };
 
 const createMarkerIcon = (theme: 'light' | 'dark') => {
@@ -93,6 +116,10 @@ const TerminalMap = ({
 }: TerminalMapProps) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const fitBoundsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const invalidateSizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const initTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   // Memoize visited country names for performance
   const visitedNames = useMemo(() => {
@@ -124,9 +151,8 @@ const TerminalMap = ({
     try {
       // Try multiple GeoJSON sources for better country boundary accuracy
       const geoJsonSources = [
-        // You can host your own GeoJSON file in the public folder for full control
-        // '/world-boundaries.geojson', // Uncomment and add your own file
-        
+        // Custom India boundaries with complete Jammu & Kashmir (priority source)
+        '/akhand-bharat.geojson',
         // World Bank boundaries (often more politically accurate)
         'https://raw.githubusercontent.com/datasets/geo-boundaries-world-110m/master/countries.geojson',
         // Natural Earth data
@@ -136,30 +162,49 @@ const TerminalMap = ({
       ];
 
       let worldData = null;
+      let indiaData = null;
       
-      for (const source of geoJsonSources) {
+      // First, try to load the custom India GeoJSON
+      try {
+        const indiaResponse = await fetch('/akhand-bharat.geojson');
+        if (indiaResponse.ok) {
+          indiaData = await indiaResponse.json();
+        }
+      } catch (error) {
+        console.warn('Could not load custom India boundaries:', error);
+      }
+      
+      // Then load the standard world data
+      for (const source of geoJsonSources.slice(1)) { // Skip the India file for world data
         try {
           const response = await fetch(source);
-          worldData = await response.json();
-          break; // Use first successful source
+          if (response.ok) {
+            worldData = await response.json();
+            break; // Use first successful source
+          }
         } catch (error) {
           continue; // Try next source
         }
       }
 
       if (!worldData) {
-        throw new Error('All GeoJSON sources failed');
+        throw new Error('All world GeoJSON sources failed');
       }
 
+      // Create the main world layer, excluding India if we have custom data
       const geoJsonLayer = L.geoJSON(worldData, {
         style: (feature) => {
           const props = feature?.properties;
           const countryName = (props?.name || props?.NAME || props?.NAME_EN || '').toLowerCase();
+          
           const isVisited = visitedNames.has(countryName);
           return getCountryStyle(isVisited, theme);
         },
+
         onEachFeature: (feature, layer) => {
           const countryName = (feature.properties?.name || feature.properties?.NAME || feature.properties?.NAME_EN || '').toLowerCase();
+          
+          
           const visitedCountry = visitedCountries.find(c => 
             (c.nameVariations || [c.country.toLowerCase()]).includes(countryName)
           );
@@ -175,6 +220,61 @@ const TerminalMap = ({
       });
 
       geoJsonLayer.addTo(map);
+
+      // Add the custom India layer with complete J&K boundaries
+      if (indiaData) {
+        // Handle GeometryCollection by creating polygons directly from coordinates
+        if (indiaData.type === 'GeometryCollection' && indiaData.geometries) {
+          indiaData.geometries.forEach((geometry: any) => {
+            let polygons: L.Polygon[] = [];
+            
+            if (geometry.type === 'MultiPolygon') {
+              // Handle MultiPolygon: each element in coordinates is a polygon
+              geometry.coordinates.forEach((polygonCoords: number[][][]) => {
+                // Convert coordinates to LatLng format and create polygon
+                const latLngs = polygonCoords[0].map((coord: number[]) => [coord[1], coord[0]] as [number, number]);
+                
+                const polygon = L.polygon(latLngs, {
+                  fillColor: theme === 'dark' ? '#00ff41' : '#a06be0',
+                  weight: 2,
+                  opacity: 1,
+                  color: theme === 'dark' ? '#00ff41' : '#a06be0',
+                  fillOpacity: 0.3
+                });
+                
+                polygon.bindTooltip('India', {
+                  permanent: false,
+                  sticky: true,
+                  className: `terminal-tooltip terminal-tooltip-${theme}`
+                });
+                
+                polygon.addTo(map);
+                polygons.push(polygon);
+              });
+            } else if (geometry.type === 'Polygon') {
+              // Handle single Polygon
+              const latLngs = geometry.coordinates[0].map((coord: number[]) => [coord[1], coord[0]] as [number, number]);
+              
+              const polygon = L.polygon(latLngs, {
+                fillColor: theme === 'dark' ? '#00ff41' : '#a06be0',
+                weight: 2,
+                opacity: 1,
+                color: theme === 'dark' ? '#00ff41' : '#a06be0',
+                fillOpacity: 0.8
+              });
+              
+              polygon.bindTooltip('India', {
+                permanent: false,
+                sticky: true,
+                className: `terminal-tooltip terminal-tooltip-${theme}`
+              });
+              
+              polygon.addTo(map);
+              polygons.push(polygon);
+            }
+          });
+        }
+      }
     } catch (error) {
       // Fallback: add simple markers for visited countries
       visitedCountries.forEach((country) => {
@@ -189,14 +289,14 @@ const TerminalMap = ({
     const map = L.map(mapRef.current, {
       center: mapConfig.center,
       zoom: mapConfig.zoom,
-      zoomControl: false,
+      zoomControl: true,
       attributionControl: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      boxZoom: false,
-      keyboard: false,
-      dragging: false,
-      touchZoom: false
+      scrollWheelZoom: true,
+      doubleClickZoom: true,
+      boxZoom: true,
+      keyboard: true,
+      dragging: true,
+      touchZoom: true
     });
 
     // Set map background
@@ -210,14 +310,34 @@ const TerminalMap = ({
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Clean up existing map
+    // Clean up existing map and all timeouts
+    if (fitBoundsTimeoutRef.current) {
+      clearTimeout(fitBoundsTimeoutRef.current);
+      fitBoundsTimeoutRef.current = null;
+    }
+    if (invalidateSizeTimeoutRef.current) {
+      clearTimeout(invalidateSizeTimeoutRef.current);
+      invalidateSizeTimeoutRef.current = null;
+    }
+    if (initTimeoutRef.current) {
+      clearTimeout(initTimeoutRef.current);
+      initTimeoutRef.current = null;
+    }
+    
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.remove();
+      try {
+        mapInstanceRef.current.remove();
+      } catch (error) {
+        console.warn('Error removing map:', error);
+      }
       mapInstanceRef.current = null;
     }
 
     // Small delay to ensure DOM is ready
-    const timer = setTimeout(() => {
+    initTimeoutRef.current = setTimeout(() => {
+      // Double-check that we haven't been unmounted
+      if (!mapRef.current) return;
+      
       const map = initializeMap();
       if (!map) return;
 
@@ -232,9 +352,39 @@ const TerminalMap = ({
         });
         tileLayer.addTo(map);
 
+        const markers: L.Marker[] = [];
         coordinates.forEach((coord) => {
-          L.marker([coord.lat, coord.lng], { icon: markerIcon }).addTo(map);
+          const marker = L.marker([coord.lat, coord.lng], { icon: markerIcon });
+          marker.addTo(map);
+          markers.push(marker);
         });
+
+        // If there are multiple coordinates, fit bounds to show all markers
+        if (coordinates.length > 1) {
+          try {
+            const group = L.featureGroup(markers);
+            // Use a slight delay to ensure the map container is fully rendered
+            fitBoundsTimeoutRef.current = setTimeout(() => {
+              try {
+                // Check if map is still valid and container exists before fitting bounds
+                if (map && 
+                    map.getContainer() && 
+                    map.getContainer().parentNode && 
+                    map.getContainer().offsetWidth > 0 &&
+                    map.getContainer().offsetHeight > 0) {
+                  map.fitBounds(group.getBounds(), { 
+                    padding: [20, 20],
+                    animate: false // Disable animation to prevent transition errors
+                  });
+                }
+              } catch (error) {
+                console.warn('Error fitting bounds:', error);
+              }
+            }, 100); // Increased delay for better stability
+          } catch (error) {
+            console.warn('Error creating feature group for bounds:', error);
+          }
+        }
       } else {
         // Default: add tile layer for basic map
         const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -245,13 +395,43 @@ const TerminalMap = ({
       }
 
       mapInstanceRef.current = map;
+      
+      // Force Leaflet to recalculate sizes and positions after everything is set up
+      invalidateSizeTimeoutRef.current = setTimeout(() => {
+        if (map && 
+            map.getContainer() && 
+            map.getContainer().parentNode &&
+            map.getContainer().offsetWidth > 0 &&
+            map.getContainer().offsetHeight > 0) {
+          try {
+            map.invalidateSize({ animate: false, pan: false });
+          } catch (error) {
+            console.warn('Error invalidating map size:', error);
+          }
+        }
+      }, 150);
     }, 100);
 
     // Cleanup function
     return () => {
-      clearTimeout(timer);
+      if (initTimeoutRef.current) {
+        clearTimeout(initTimeoutRef.current);
+        initTimeoutRef.current = null;
+      }
+      if (fitBoundsTimeoutRef.current) {
+        clearTimeout(fitBoundsTimeoutRef.current);
+        fitBoundsTimeoutRef.current = null;
+      }
+      if (invalidateSizeTimeoutRef.current) {
+        clearTimeout(invalidateSizeTimeoutRef.current);
+        invalidateSizeTimeoutRef.current = null;
+      }
       if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
+        try {
+          mapInstanceRef.current.remove();
+        } catch (error) {
+          console.warn('Error cleaning up map:', error);
+        }
         mapInstanceRef.current = null;
       }
     };

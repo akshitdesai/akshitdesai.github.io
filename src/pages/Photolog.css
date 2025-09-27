@@ -63,7 +63,6 @@
   max-width: 1200px; /* Increased width for two-panel layout */
   width: 100%;
   margin: 0 auto;
-  padding-left: 2rem;
   margin-top: 120px; /* Reduced space for fixed intro and title sections */
   display: flex;
   flex-direction: column;
@@ -174,7 +173,6 @@
   
   .photolog-container .section-content {
     max-width: 900px;
-    padding-left: 1rem;
   }
   
   .photolog-container .location-map-container {
@@ -253,4 +251,53 @@
 
 .photolog-container.dark .location-dates-inline {
   color: #ccc;
+}
+
+/* Date styling for selected locations - darker/more prominent */
+.location-dates-selected {
+  font-style: italic;
+  opacity: 1.0;
+}
+
+.photolog-container.light .location-dates-selected {
+  color: #333;
+}
+
+.photolog-container.dark .location-dates-selected {
+  color: #fff;
+}
+
+/* Date styling for unselected locations - lighter/less prominent */
+.location-dates-unselected {
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.photolog-container.light .location-dates-unselected {
+  color: #666;
+}
+
+.photolog-container.dark .location-dates-unselected {
+  color: #999;
+}
+
+/* Bold styling for "based out of" locations */
+.based-out-of {
+  font-weight: bold !important;
+}
+
+/* Legend styling */
+.location-legend {
+  margin-top: 1rem;
+  padding: 0.5rem 0;
+  text-align: left !important;
+  width: 100%;
+  display: block;
+}
+
+.location-legend .holocene-info {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-align: left !important;
+  margin: 0;
 }

@@ -1,55 +1,168 @@
 [
   {
-    "location": "San Francisco",
-    "colorN": 3,
+    "location": "Ontario 🇨🇦",
+    "colorN": 7,
     "coordinates": [
-      { "lat": 37.7749, "lng": -122.4194 },
-      { "lat": 37.8044, "lng": -122.2712 }
+      { "lat": 45.4215, "lng": -75.6972 },
+      { "lat": 42.3149, "lng": -83.0364 },
+      { "lat": 43.6532, "lng": -79.3832 },
+      { "lat": 43.0896, "lng": -79.0849 }
     ],
     "dates": [
-      "12024-01",
-      "12024-03",
-      "12024-07",
-      "12024-09"
+      { "date": "12024-[05,12]", "basedOutOf": false },
+      { "date": "12023-05", "basedOutOf": false }
+    ],
+    "places": [
+      "Ottawa",
+      "Windsor", 
+      "Toronto",
+      "Niagara Falls"
     ]
   },
   {
-    "location": "New York City",
-    "colorN": 3,
-    "coordinates": [
-      { "lat": 40.7128, "lng": -74.0060 },
-      { "lat": 40.7589, "lng": -73.9851 },
-      { "lat": 40.6892, "lng": -74.0445 }
-    ],
-    "dates": [
-      "12024-02",
-      "12024-05",
-      "12024-11"
-    ]
-  },
-  {
-    "location": "Tokyo",
-    "colorN": 5,
-    "coordinates": [
-      { "lat": 35.6762, "lng": 139.6503 },
-      { "lat": 35.6895, "lng": 139.6917 }
-    ],
-    "dates": [
-      "12024-04",
-      "12024-08"
-    ]
-  },
-  {
-    "location": "London",
+    "location": "Quebec 🇨🇦",
     "colorN": 6,
     "coordinates": [
-      { "lat": 51.5074, "lng": -0.1278 },
-      { "lat": 51.5155, "lng": -0.0922 },
-      { "lat": 51.4994, "lng": -0.1245 }
+      { "lat": 46.0167, "lng": -75.0833 },
+      { "lat": 46.1187, "lng": -74.5977 },
+      { "lat": 45.3167, "lng": -72.2000 },
+      { "lat": 45.1667, "lng": -71.1167 },
+      { "lat": 46.7833, "lng": -70.1167 },
+      { "lat": 46.8139, "lng": -71.2080 },
+      { "lat": 45.7833, "lng": -74.3167 },
+      { "lat": 45.5017, "lng": -73.5673 }
     ],
     "dates": [
-      "12024-06",
-      "12024-10"
+      { "date": "12022-12024", "basedOutOf": true }
+    ],
+    "places": [
+      "Lac-des-Plages",
+      "Mont-Tremblant",
+      "Orford",
+      "Notre-Dame-des-Bois",
+      "Saint-Philemon",
+      "Quebec City",
+      "Grace Field",
+      "Montreal"
+    ]
+  },
+  {
+    "location": "Texas 🇺🇸",
+    "colorN": 5,
+    "coordinates": [
+      { "lat": 30.2672, "lng": -97.7431 }
+    ],
+    "dates": [
+      { "date": "12024-09", "basedOutOf": false },
+      { "date": "12025-10", "basedOutOf": false }
+    ],
+    "places": [
+      "Austin"
+    ]
+  },
+  {
+    "location": "British Columbia 🇨🇦",
+    "colorN": 16,
+    "coordinates": [
+      { "lat": 50.6745, "lng": -120.3273 },
+      { "lat": 49.2827, "lng": -123.1207 }
+    ],
+    "dates": [
+      { "date": "12023-[05-08]", "basedOutOf": true },
+      { "date": "12024-06~", "basedOutOf": true }
+    ],
+    "places": [
+      "Kamloops",
+      "Vancouver"
+    ]
+  },
+  {
+    "location": "Alberta 🇨🇦",
+    "colorN": 7,
+    "coordinates": [
+      { "lat": 51.0447, "lng": -114.0719 },
+      { "lat": 50.9739, "lng": -115.0436 },
+      { "lat": 51.4639, "lng": -112.7078 },
+      { "lat": 53.5444, "lng": -113.4909 },
+      { "lat": 51.1784, "lng": -115.5708 }
+    ],
+    "dates": [
+      { "date": "12024-08", "basedOutOf": false },
+      { "date": "12023-06", "basedOutOf": false }
+    ],
+    "places": [
+      "Calgary",
+      "Kananaskis",
+      "Drumheller",
+      "Edmonton",
+      "Banff"
+    ]
+  },
+  {
+    "location": "Dubai 🇦🇪",
+    "colorN": 5,
+    "coordinates": [
+      { "lat": 25.2048, "lng": 55.2708 }
+    ],
+    "dates": [
+      { "date": "12024-01", "basedOutOf": false }
+    ],
+    "places": [
+      "Dubai"
+    ]
+  },
+  {
+    "location": "Karnataka 🇮🇳",
+    "colorN": 9,
+    "coordinates": [
+      { "lat": 12.9716, "lng": 77.5946 }
+    ],
+    "dates": [
+      { "date": "12021-[02-04]", "basedOutOf": true },
+      { "date": "12022-06", "basedOutOf": false },
+      { "date": "12024-01", "basedOutOf": false }
+    ],
+    "places": [
+      "Bengaluru"
+    ]
+  },
+  {
+    "location": "Maharashtra 🇮🇳",
+    "colorN": 11,
+    "coordinates": [
+      { "lat": 18.9847, "lng": 73.2673 }
+    ],
+    "dates": [
+      { "date": "12022-07", "basedOutOf": false }
+    ],
+    "places": [
+      "Matheran"
+    ]
+  },
+  {
+    "location": "Rajasthan 🇮🇳",
+    "colorN": 9,
+    "coordinates": [
+      { "lat": 24.5854, "lng": 73.7125 }
+    ],
+    "dates": [
+      { "date": "12021-10", "basedOutOf": false }
+    ],
+    "places": [
+      "Udaipur"
+    ]
+  },
+  {
+    "location": "Gujarat 🇮🇳",
+    "colorN": 7,
+    "coordinates": [
+      { "lat": 22.5645, "lng": 72.9289 }
+    ],
+    "dates": [
+      { "date": "~12022-08", "basedOutOf": true }
+    ],
+    "places": [
+      "Anand"
     ]
   }
 ]

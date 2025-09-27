@@ -1,9 +1,12 @@
 import React from 'react';
 import pingData from '../data/ping.json';
-import PingPong from './PingPong.tsx';
+import PingPong from './PingPong';
 
+interface PingProps {
+  theme: 'light' | 'dark';
+}
 
-const Ping: React.FC = ({ theme }) => {
+const Ping: React.FC<PingProps> = ({ theme }) => {
   return (
     <div className="section-content">
       <h2><span className="secondary-text">ping</span> me</h2>

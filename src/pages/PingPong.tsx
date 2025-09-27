@@ -20,7 +20,7 @@ const HintText = ({ show, theme, children }: HintTextProps) => {
 };
 
 const PingPong = ({ theme }: PingPongProps) => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [finished, setFinished] = useState(false);
   const [scoreLeft, setScoreLeft] = useState(0);
   const [scoreRight, setScoreRight] = useState(0);
