@@ -1,3 +1,8 @@
+/* Smaller legend text */
+.legend-text {
+  font-size: 0.92rem;
+  opacity: 0.85;
+}
 .photolog-container.light {
 	color: #111;
 }
@@ -12,6 +17,346 @@
 
 .photolog-container.dark .secondary {
 	color: #00ff41 !important;
+}
+
+/* Prevent scrollbar flickering when dropdown opens */
+body {
+  overflow-y: scroll !important;
+}
+
+html {
+  overflow-y: scroll !important;
+}
+
+/* Ensure consistent scrollbar visibility */
+.photolog-container {
+  min-height: 100vh;
+}
+
+/* Prevent Material-UI from modifying body overflow */
+.MuiModal-root {
+  overflow-y: visible !important;
+}
+
+/* Filter Controls Styling */
+.photolog-filters {
+  margin-bottom: 0.5rem;
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 1.4rem;
+  padding-right: 2rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+.photolog-filters-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.photolog-filters-right {
+  display: flex;
+  align-items: center;
+  margin-left: 2rem;
+}
+
+.location-dates {
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.date-text {
+  color: var(--text-color);
+}
+
+/* Material-UI Terminal Theme Styling */
+.photolog-container.light .MuiFormControl-root {
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+}
+
+.photolog-container.dark .MuiFormControl-root {
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+}
+
+/* Input Labels */
+.photolog-container.light .MuiInputLabel-root {
+  color: #111 !important;
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+  font-size: 14px !important;
+}
+
+.photolog-container.dark .MuiInputLabel-root {
+  color: #fff !important;
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+  font-size: 14px !important;
+}
+
+.photolog-container.light .MuiInputLabel-root.Mui-focused {
+  color: #a06be0 !important;
+}
+
+.photolog-container.dark .MuiInputLabel-root.Mui-focused {
+  color: #00ff41 !important;
+}
+
+.photolog-container.light .MuiInputLabel-root.Mui-disabled {
+  color: #999 !important;
+}
+
+.photolog-container.dark .MuiInputLabel-root.Mui-disabled {
+  color: #666 !important;
+}
+
+/* Select Components */
+.photolog-container.light .MuiOutlinedInput-root {
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+  font-size: 14px !important;
+  color: #111 !important;
+  background-color: transparent !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-root {
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+  font-size: 14px !important;
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+.photolog-container.light .MuiOutlinedInput-input {
+  color: #111 !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-input {
+  color: #fff !important;
+}
+
+.photolog-container.light .MuiOutlinedInput-notchedOutline {
+  border-color: #111 !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+
+.photolog-container.light .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #111 !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+
+.photolog-container.light .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #a06be0 !important;
+  border-width: 1px !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00ff41 !important;
+  border-width: 1px !important;
+}
+
+/* Disabled State */
+.photolog-container.light .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline {
+  border-color: #999 !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline {
+  border-color: #666 !important;
+}
+
+.photolog-container.light .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-input {
+  color: #999 !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-input {
+  color: #666 !important;
+}
+
+/* Dropdown Arrow */
+.photolog-container.light .MuiSelect-icon {
+  color: #111 !important;
+}
+
+.photolog-container.dark .MuiSelect-icon {
+  color: #fff !important;
+}
+
+.photolog-container.light .MuiSelect-iconOpen {
+  color: #a06be0 !important;
+}
+
+.photolog-container.dark .MuiSelect-iconOpen {
+  color: #00ff41 !important;
+}
+
+.photolog-container.light .MuiOutlinedInput-root.Mui-disabled .MuiSelect-icon {
+  color: #999 !important;
+}
+
+.photolog-container.dark .MuiOutlinedInput-root.Mui-disabled .MuiSelect-icon {
+  color: #666 !important;
+}
+
+/* Menu Paper Background - More specific targeting */
+.photolog-container.light .MuiPaper-root.MuiMenu-paper {
+  background-color: #fff !important;
+  border: 1px solid #111 !important;
+  font-family: 'Courier New', monospace !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.photolog-container.dark .MuiPaper-root.MuiMenu-paper {
+  background-color: #111 !important;
+  border: 1px solid #fff !important;
+  font-family: 'Courier New', monospace !important;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Additional dark theme targeting for menu popover */
+.photolog-container.dark .MuiPopover-paper {
+  background-color: #111 !important;
+}
+
+.photolog-container.light .MuiPopover-paper {
+  background-color: #fff !important;
+}
+
+/* Menu List styling */
+.photolog-container.dark .MuiMenu-list {
+  background-color: #111 !important;
+  padding: 0 !important;
+}
+
+.photolog-container.light .MuiMenu-list {
+  background-color: #fff !important;
+  padding: 0 !important;
+}
+
+/* Menu Items */
+.photolog-container.light .MuiMenuItem-root {
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+  font-size: 14px !important;
+  color: #111 !important;
+  background-color: #fff !important;
+}
+
+.photolog-container.dark .MuiMenuItem-root {
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace !important;
+  font-size: 14px !important;
+  color: #fff !important;
+  background-color: #111 !important;
+}
+
+.photolog-container.light .MuiMenuItem-root:hover {
+  background-color: #a06be0 !important;
+  color: #fff !important;
+}
+
+.photolog-container.dark .MuiMenuItem-root:hover {
+  background-color: #00ff41 !important;
+  color: #111 !important;
+}
+
+.photolog-container.light .MuiMenuItem-root.Mui-selected {
+  background-color: rgba(160, 107, 224, 0.1) !important;
+  color: #111 !important;
+}
+
+.photolog-container.dark .MuiMenuItem-root.Mui-selected {
+  background-color: rgba(0, 255, 65, 0.1) !important;
+  color: #fff !important;
+}
+
+.photolog-container.light .MuiMenuItem-root.Mui-selected:hover {
+  background-color: #a06be0 !important;
+  color: #fff !important;
+}
+
+.photolog-container.dark .MuiMenuItem-root.Mui-selected:hover {
+  background-color: #00ff41 !important;
+  color: #111 !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .photolog-filters {
+    flex-direction: column;
+    align-items: stretch;
+    padding-left: 1.5rem; /* Match mobile title padding */
+    padding-right: 1.5rem;
+  }
+
+  .photolog-filters-left {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .photolog-filters .MuiFormControl-root {
+    margin: 0.5rem 0 !important;
+    width: 100% !important;
+  }
+
+  .photolog-filters-right {
+    margin-left: 0;
+    margin-top: 1rem;
+    justify-content: flex-start;
+  }
+
+  .location-legend {
+    padding-left: 1.5rem; /* Match mobile title padding */
+  }
+}
+
+/* Global Material-UI Menu overrides for dark theme within photolog container */
+.photolog-container.dark .MuiPaper-root[role="presentation"] {
+  background-color: #111 !important;
+  color: #fff !important;
+}
+
+.photolog-container.light .MuiPaper-root[role="presentation"] {
+  background-color: #fff !important;
+  color: #111 !important;
+}
+
+/* Ensure all Material-UI menu components follow the theme */
+.photolog-container.dark .MuiList-root {
+  background-color: #111 !important;
+}
+
+.photolog-container.light .MuiList-root {
+  background-color: #fff !important;
+}
+
+/* Target the portal content specifically for dark theme */
+.photolog-container.dark ~ div[role="presentation"] .MuiPaper-root,
+.photolog-container.dark ~ div[data-testid="sentinelEnd"] + div .MuiPaper-root {
+  background-color: #111 !important;
+  border: 1px solid #fff !important;
+}
+
+.photolog-container.light ~ div[role="presentation"] .MuiPaper-root,
+.photolog-container.light ~ div[data-testid="sentinelEnd"] + div .MuiPaper-root {
+  background-color: #fff !important;
+  border: 1px solid #111 !important;
+}
+
+/* Prevent backdrop from affecting scrollbar */
+.MuiBackdrop-root {
+  position: fixed !important;
+  overflow: visible !important;
+}
+
+/* Prevent popover from affecting body overflow */
+.MuiPopover-root {
+  position: fixed !important;
 }
 
 /* Holocene Calendar theme-aware styles */
@@ -43,29 +388,13 @@
   text-align: left;
 }
 
-/* Fixed title below intro section */
+/* Title that scrolls naturally with content */
 .photolog-container .section-title {
-  position: fixed;
-  top: 190px; /* Reduced space above the title */
-  left: 50%;
-  transform: translateX(-50%);
   max-width: 900px;
   width: 100%;
   padding-left: 2rem;
-  z-index: 90;
-  margin: 0;
+  margin-top: 3rem;
   text-align: left;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.photolog-container .section-title.hidden {
-  transform: translateX(-50%) translateY(-100%);
-  opacity: 0;
-}
-
-.photolog-container .section-title.visible {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
 }
 
 /* Content positioned below fixed elements with proper spacing */
@@ -73,8 +402,6 @@
   position: relative;
   max-width: 1200px; /* Increased width for two-panel layout */
   width: 100%;
-  margin: 0 auto;
-  margin-top: 120px; /* Reduced space for fixed intro and title sections */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -248,11 +575,10 @@
     transform: rotate(90deg);
   }
 
-  /* Mobile title positioning adjustments */
+  /* Mobile title styling */
   .photolog-container .section-title {
-    top: 140px; /* Increased from 120px to add more top margin */
     font-size: 1.2rem;
-    padding-left: 5rem; /* Increased from 1rem to 1.5rem for mobile */
+    padding-left: 1.5rem; /* Increased padding for mobile */
   }
 
   .photolog-container .location-map-container {
@@ -358,8 +684,10 @@
 .location-legend {
   margin-top: 1rem;
   padding: 0.5rem 0;
+  padding-left: 2rem;
   text-align: left !important;
   width: 100%;
+  max-width: 900px;
   display: block;
 }
 

@@ -446,6 +446,51 @@ const TerminalMap = ({
     markerIcon
   ]);
 
+  // Handle coordinate changes without reinitializing the entire map
+  useEffect(() => {
+    if (!mapInstanceRef.current || mapConfig.isWorldMapMode) return;
+    
+    const map = mapInstanceRef.current;
+    
+    // Clear existing markers
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+    
+    if (coordinates.length > 0) {
+      // Add new markers
+      const markers: L.Marker[] = [];
+      coordinates.forEach((coord) => {
+        const marker = L.marker([coord.lat, coord.lng], { icon: markerIcon });
+        marker.addTo(map);
+        markers.push(marker);
+      });
+
+      // Animate to new bounds or center
+      if (coordinates.length === 1) {
+        // Single location - animate to center
+        map.setView([coordinates[0].lat, coordinates[0].lng], zoom, {
+          animate: true,
+          duration: 1.0
+        });
+      } else if (coordinates.length > 1) {
+        // Multiple locations - animate to fit all
+        try {
+          const group = L.featureGroup(markers);
+          map.fitBounds(group.getBounds(), { 
+            padding: [20, 20],
+            animate: true,
+            duration: 1.0
+          });
+        } catch (error) {
+          console.warn('Error fitting bounds during animation:', error);
+        }
+      }
+    }
+  }, [coordinates, zoom, markerIcon, mapConfig.isWorldMapMode]);
+
   return (
     <div className={`terminal-map-container terminal-map-${theme} ${noBorder ? 'no-border' : ''}`}>
       <div

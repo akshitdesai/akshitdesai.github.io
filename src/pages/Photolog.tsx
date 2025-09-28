@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, ThemeProvider, createTheme } from '@mui/material';
 import './Photolog.css';
 import './shared.css';
 import './history.css';
@@ -11,24 +12,182 @@ interface PhotologProps {
   theme: 'light' | 'dark';
 }
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+}
+
 interface PhotologLocation {
   location: string;
+  country: string;
   colorN: number;
   coordinates: { lat: number; lng: number }[];
   dates: { date: string; basedOutOf: boolean }[];
+  places: string[];
+}
+
+interface PhotologData {
+  visitedCountries: Country[];
+  locations: PhotologLocation[];
 }
 
 const Photolog = ({ theme }: PhotologProps) => {
   const [locations, setLocations] = useState<PhotologLocation[]>([]);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [filteredLocations, setFilteredLocations] = useState<PhotologLocation[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const [selectedLocation, setSelectedLocation] = useState<string>('');
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [previousIdx, setPreviousIdx] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1200);
-  const [isHeaderVisible, setIsHeaderVisible] = useState<boolean>(true);
+
+  // Create Material-UI theme based on current theme
+  const muiTheme = createTheme({
+    palette: {
+      mode: theme === 'dark' ? 'dark' : 'light',
+      primary: {
+        main: theme === 'dark' ? '#00ff41' : '#a06be0',
+      },
+      background: {
+        default: theme === 'dark' ? '#111' : '#fff',
+        paper: theme === 'dark' ? '#111' : '#fff',
+      },
+      text: {
+        primary: theme === 'dark' ? '#fff' : '#111',
+      },
+    },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            fontFamily: "'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace",
+            fontSize: '14px',
+          },
+        },
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            fontFamily: "'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace",
+            fontSize: '14px',
+          },
+        },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            fontFamily: "'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace",
+            fontSize: '14px',
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            backgroundColor: theme === 'dark' ? '#111' : '#fff',
+            color: theme === 'dark' ? '#fff' : '#111',
+            border: `1px solid ${theme === 'dark' ? '#fff' : '#111'}`,
+          },
+        },
+      },
+      MuiModal: {
+        styleOverrides: {
+          root: {
+            overflow: 'visible !important',
+          },
+        },
+      },
+      MuiPopover: {
+        styleOverrides: {
+          root: {
+            overflow: 'visible !important',
+          },
+        },
+      },
+    },
+  });
 
   useEffect(() => {
-    setLocations(photologData as PhotologLocation[]);
+    const data = photologData as PhotologData;
+    setLocations(data.locations);
+    setCountries(data.visitedCountries);
+    setFilteredLocations(data.locations);
   }, []);
+
+  // Get countries from the loaded data
+  const getCountries = () => {
+    return countries.map(country => ({
+      key: country.code,
+      value: country.code,
+      text: country.flag
+    }));
+  };
+
+  // Get location options for dropdown
+  const getLocationOptions = () => {
+    return filteredLocations.map((loc) => ({
+      key: loc.location,
+      value: loc.location,
+      text: loc.location
+    }));
+  };
+
+  // Calculate country bounds from all locations in a country
+  const getCountryBounds = (countryCode: string) => {
+    const countryLocations = locations.filter(loc => loc.country === countryCode);
+    if (countryLocations.length === 0) return [];
+    
+    // Flatten all coordinates from all locations in the country
+    const allCoordinates = countryLocations.reduce((acc, loc) => {
+      return acc.concat(loc.coordinates);
+    }, [] as { lat: number; lng: number }[]);
+    
+    return allCoordinates;
+  };
+
+  // Filter locations by selected country
+  useEffect(() => {
+    if (selectedCountry === '') {
+      setFilteredLocations(locations);
+    } else {
+      const filtered = locations.filter(loc => loc.country === selectedCountry);
+      setFilteredLocations(filtered);
+    }
+    setOpenIdx(null); // Reset expanded location when filtering
+  }, [selectedCountry, locations]);
+
+  // Handle country selection
+  const handleCountryChange = (event: SelectChangeEvent) => {
+    const countryCode = event.target.value;
+    if (countryCode === "🇺🇳") {
+      setSelectedCountry('');
+    } else {
+      setSelectedCountry(countryCode);
+    }
+    setSelectedLocation(''); // Reset location when country changes
+    setOpenIdx(null);
+  };
+
+  // Handle location selection
+  const handleLocationChange = (event: SelectChangeEvent) => {
+    const locationName = event.target.value;
+    if (locationName === "nil") {
+      setSelectedLocation('');
+    } else {
+      setSelectedLocation(locationName);
+    }
+    
+    if (locationName && locationName !== "nil") {
+      const locationIndex = filteredLocations.findIndex(loc => loc.location === locationName);
+      if (locationIndex !== -1) {
+        handleToggle(locationIndex);
+      }
+    } else {
+      setOpenIdx(null);
+    }
+  };
 
   // Handle window resize for responsive behavior
   useEffect(() => {
@@ -38,23 +197,6 @@ const Photolog = ({ theme }: PhotologProps) => {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Handle scroll for header visibility
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const isScrollingDown = currentScrollY > lastScrollY;
-      const shouldHideHeader = isScrollingDown && currentScrollY > 100;
-      
-      setIsHeaderVisible(!shouldHideHeader);
-      lastScrollY = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isMobile = windowWidth <= 768;
@@ -103,7 +245,7 @@ const Photolog = ({ theme }: PhotologProps) => {
       {dates.map((dateObj, index) => (
         <span key={index}>
           {dateObj.basedOutOf ? 
-            <><span className="secondary">{dateObj.date.charAt(0)}</span>{dateObj.date.slice(1)}</> 
+            <strong><em><span className="secondary">{dateObj.date.charAt(0)}</span>{dateObj.date.slice(1)}</em></strong>
             : dateObj.date}
           {index < dates.length - 1 ? ', ' : ''}
         </span>
@@ -117,37 +259,141 @@ const Photolog = ({ theme }: PhotologProps) => {
 
   return (
     <div className={`photolog-container ${theme}`}>
-      <h2 className={`section-title ${isHeaderVisible ? 'visible' : 'hidden'}`}>
+      <h2 className="section-title">
         travel &gt; <span className="secondary">photos.log</span>
       </h2>
       <div className="section-content">
+        {/* Legend for based out of locations - now above dropdown */}
+        <div className="location-legend">
+          <span className="legend-text">
+            Dates use the <a className="holocene-calendar" href="https://en.wikipedia.org/wiki/Holocene_calendar">Holocene Calendar</a> — <a className="holocene-calendar" href="https://www.youtube.com/web?v=czgOWmtGVGs">the Human Era</a>.<br/>
+            <span style={{marginTop: '0.3em', display: 'inline-block'}}>
+              <strong>b</strong>&<em>i</em>: places I've been based out of. <span className="secondary">■</span>
+            </span>
+          </span>
+        </div>
+        {/* Filter Controls - now below legend */}
+        <ThemeProvider theme={muiTheme}>
+          <div className="photolog-filters">
+            <div className="photolog-filters-left">
+              <FormControl sx={{ m: 1, minWidth: 80 }}>
+                <InputLabel id="country-select-label">ctry</InputLabel>
+                <Select
+                  labelId="country-select-label"
+                  id="country-select"
+                  value={selectedCountry || "🇺🇳"}
+                  label="ctry"
+                  onChange={handleCountryChange}
+                  displayEmpty
+                  renderValue={(selected) => {
+                    if (!selected || selected === "🇺🇳") {
+                      return "🇺🇳";
+                    }
+                    // Find the country and return its flag
+                    const country = countries.find(c => c.code === selected);
+                    return country ? country.flag : selected;
+                  }}
+                  MenuProps={{
+                    disableScrollLock: true,
+                  }}
+                >
+                  <MenuItem value="🇺🇳">
+                    🇺🇳
+                  </MenuItem>
+                  {getCountries().map(({ key, value, text }) => (
+                    <MenuItem key={key} value={value}>
+                      {text}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              
+              <FormControl sx={{ m: 1, minWidth: 180 }}>
+                <InputLabel id="location-select-label">Location</InputLabel>
+                <Select
+                  labelId="location-select-label"
+                  id="location-select"
+                  value={selectedLocation || "nil"}
+                  label="Location"
+                  onChange={handleLocationChange}
+                  disabled={!selectedCountry}
+                  displayEmpty
+                  renderValue={(selected) => {
+                    if (!selected || selected === "nil") {
+                      return "nil";
+                    }
+                    return selected;
+                  }}
+                  MenuProps={{
+                    disableScrollLock: true,
+                  }}
+                >
+                  <MenuItem value="nil">
+                    nil
+                  </MenuItem>
+                  {getLocationOptions().map(({ key, value, text }) => (
+                    <MenuItem key={key} value={value}>
+                      {text}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            
+            {/* Show dates on the right when location is selected */}
+            {selectedLocation && selectedLocation !== "nil" && (
+              <div className="photolog-filters-right">
+                {(() => {
+                  const selectedLocationData = filteredLocations.find(loc => loc.location === selectedLocation);
+                  return selectedLocationData ? (
+                    <div className="location-dates">
+                      {renderDates(selectedLocationData.dates, "date-text")}
+                    </div>
+                  ) : null;
+                })()}
+              </div>
+            )}
+          </div>
+        </ThemeProvider>
+
         <div className="photolog-layout">
           {/* Full Screen Map Section */}
           <div className="photolog-map-section">
             <div className="location-map-container" style={{ position: 'relative' }}>
               <TerminalMap
                 coordinates={
+                  // If a specific location is selected, show its coordinates
                   (openIdx !== null || (isTransitioning && previousIdx !== null)) && 
-                  locations[openIdx !== null ? openIdx : previousIdx!] 
-                    ? locations[openIdx !== null ? openIdx : previousIdx!].coordinates || []
+                  filteredLocations[openIdx !== null ? openIdx : previousIdx!] 
+                    ? filteredLocations[openIdx !== null ? openIdx : previousIdx!].coordinates || []
+                    // If a country is selected but no specific location, show all country coordinates
+                    : selectedCountry && !selectedLocation
+                    ? getCountryBounds(selectedCountry)
                     : []
                 }
                 visitedCountries={
-                  (openIdx === null && !isTransitioning && previousIdx === null)
+                  // Show world view only when no country or location is selected
+                  (!selectedCountry && openIdx === null && !isTransitioning && previousIdx === null)
                     ? visitedData.visitedCountries as any
                     : undefined
                 }
                 theme={theme}
                 zoom={
+                  // Specific location selected - high zoom
                   (openIdx !== null || (isTransitioning && previousIdx !== null)) && 
-                  locations[openIdx !== null ? openIdx : previousIdx!] 
+                  filteredLocations[openIdx !== null ? openIdx : previousIdx!] 
                     ? 11 
+                    // Country selected but no location - medium zoom to fit country
+                    : selectedCountry && !selectedLocation
+                    ? 5
+                    // World view - low zoom
                     : 1.4
                 }
                 height={isMobile ? 300 : 400}
-                width={isMobile ? Math.min(windowWidth - 40, 350) : 800}
+                width={isMobile ? Math.min(windowWidth - 40, 350) : 840}
                 forceWorldView={
-                  (openIdx === null && !isTransitioning && previousIdx === null)
+                  // Force world view only when nothing is selected
+                  (!selectedCountry && openIdx === null && !isTransitioning && previousIdx === null)
                 }
               />
               {(isTransitioning || (openIdx === null && previousIdx !== null)) && (
@@ -166,7 +412,7 @@ const Photolog = ({ theme }: PhotologProps) => {
                   <span className="secondary">Loading...</span>
                 </div>
               )}
-              {!isTransitioning && (openIdx === null && previousIdx === null) && (
+              {!isTransitioning && (!selectedCountry && openIdx === null && previousIdx === null) && (
                 <div className="map-overlay-text" style={{
                   position: 'absolute',
                   bottom: '30px',
@@ -178,88 +424,25 @@ const Photolog = ({ theme }: PhotologProps) => {
                   Countries I've been to. <span className="secondary">■</span>
                 </div>
               )}
+              {!isTransitioning && selectedCountry && !selectedLocation && (
+                <div className="map-overlay-text" style={{
+                  position: 'absolute',
+                  bottom: '30px',
+                  left: '80px',
+                  color: 'var(--text-color)',
+                  fontSize: '14px',
+                  zIndex: 5
+                }}>
+                  {countries.find(c => c.code === selectedCountry)?.flag} {countries.find(c => c.code === selectedCountry)?.name} locations. <span className="secondary">■</span>
+                </div>
+              )}
             </div>
             <div className="location-dates-container">
             </div>
           </div>
 
-          {/* Location List Section */}
+          {/* Location List Section - Now Empty */}
           <div className="photolog-list-section">
-            <ul className="history-list">
-              {locations.map((loc, idx) => (
-                <>
-                  <li
-                    key={idx}
-                    className={`history-item ${openIdx === idx ? 'expanded' : ''}`}
-                    onClick={() => handleToggle(idx)}
-                  >
-                    <span
-                      className={`secondary history-arrow ${openIdx === idx ? 'rotated' : ''}`}
-                    >
-                      {isMobile ? (
-                        // Mobile: Single chevron that rotates when selected
-                        <svg width="16" height="16" viewBox="0 0 20 20">
-                          <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      ) : (
-                        // Desktop: Different chevrons for selected/unselected
-                        openIdx === idx ? (
-                          // Double chevron for selected location
-                          <svg width="16" height="16" viewBox="0 0 20 20">
-                            <polyline points="6 6 10 10 6 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                            <polyline points="10 6 14 10 10 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        ) : (
-                          // Single chevron for unselected locations
-                          <svg width="16" height="16" viewBox="0 0 20 20">
-                            <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )
-                      )}
-                    </span>
-                    <span className={`history-company ${hasBasedOutOfDates(loc.dates) ? 'based-out-of' : ''}`}>
-                      {isMobile ? (
-                        // Mobile: Show only location name, dates in expandable section
-                        openIdx === idx
-                          ? <>{colorFirstN(loc.location, loc.colorN)}</>
-                          : loc.location
-                      ) : (
-                        // Desktop: Show location and dates inline
-                        openIdx === idx
-                          ? <>{colorFirstN(loc.location, loc.colorN)} - {renderDates(loc.dates, "location-dates-selected")}</>
-                          : <>{loc.location} - {renderDates(loc.dates, "location-dates-unselected")}</>
-                      )}
-                    </span>
-                  </li>
-                  {isMobile && (
-                    <li className={`history-details${openIdx === idx ? ' open' : ''}`}>
-                      <ul className="history-details-list">
-                        {loc.dates.map((dateObj, dateIdx) => (
-                          <li key={dateIdx} className="history-details-item">
-                            <span className="secondary history-bullet">•</span>
-                            <span className={dateObj.basedOutOf ? 'based-out-of' : ''}>
-                              {dateObj.basedOutOf ? 
-                                <><span className="secondary">{dateObj.date.charAt(0)}</span>{dateObj.date.slice(1)}</> 
-                                : dateObj.date}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  )}
-                </>
-              ))}
-            </ul>
-            {/* Legend for based out of locations */}
-            <div className="location-legend">
-                <>
-                    Dates use the <a className="holocene-calendar" href="https://en.wikipedia.org/wiki/Holocene_calendar"> Holocene Calendar</a> — <a className="holocene-calendar" href="https://www.youtube.com/web?v=czgOWmtGVGs">the Human Era</a>.
-                </> 
-                <br/>
-                <br/>
-                <strong>bold</strong>: dates I've been based out of.{' '}
-                <span className="secondary">■</span>
-            </div>
           </div>
         </div>
         
