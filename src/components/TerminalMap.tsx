@@ -38,7 +38,8 @@ const calculateMapCenter = (coordinates: { lat: number; lng: number }[], isWorld
 
 const calculateMapZoom = (coordinates: { lat: number; lng: number }[], isWorldMapMode: boolean, defaultZoom: number): number => {
   if (isWorldMapMode) {
-    return 1.4;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
+    return isMobile ? 0 : 1.4;
   }
   
   if (coordinates.length === 0) {
@@ -132,17 +133,21 @@ const TerminalMap = ({
   }, [visitedCountries]);
 
   // Memoize map configuration
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
   const mapConfig = useMemo(() => {
     const isWorldMapMode = forceWorldView || (visitedCountries.length > 0 && coordinates.length === 0);
     const isLocationMode = coordinates.length > 0;
-    
+    let effectiveZoom = zoom;
+    if (isWorldMapMode && isMobile) {
+      effectiveZoom = 0;
+    }
     return {
       isWorldMapMode,
       isLocationMode,
       center: calculateMapCenter(coordinates, isWorldMapMode),
-      zoom: calculateMapZoom(coordinates, isWorldMapMode, zoom)
+      zoom: calculateMapZoom(coordinates, isWorldMapMode, effectiveZoom)
     };
-  }, [visitedCountries.length, coordinates, forceWorldView, zoom]);
+  }, [visitedCountries.length, coordinates, forceWorldView, zoom, isMobile]);
 
   // Memoize marker icon to prevent recreation
   const markerIcon = useMemo(() => createMarkerIcon(theme), [theme]);

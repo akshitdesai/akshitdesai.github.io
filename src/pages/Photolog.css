@@ -1,3 +1,23 @@
+@media (max-width: 768px) {
+  .location-dates-mobile {
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: 0.1rem;
+    font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+    text-align: left;
+    opacity: 0.85;
+  }
+}
+/* Hide the extra legend break by default, show only on mobile */
+.legend-mobile-break {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .legend-mobile-break {
+    display: block !important;
+  }
+}
 /* Smaller legend text */
 .legend-text {
   font-size: 0.92rem;
@@ -286,32 +306,54 @@ html {
 
 /* Mobile responsive */
 @media (max-width: 768px) {
+  .photolog-container .section-content {
+    margin-top: 0 !important;
+  }
+  .photolog-container .section-title {
+    margin-top: 1rem !important;
+  }
   .photolog-filters {
-    flex-direction: column;
-    align-items: stretch;
-    padding-left: 1.5rem; /* Match mobile title padding */
-    padding-right: 1.5rem;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0.2rem;
+    padding-right: 0.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    gap: 0.5rem;
   }
 
   .photolog-filters-left {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
     gap: 0.5rem;
   }
-  
+
   .photolog-filters .MuiFormControl-root {
-    margin: 0.5rem 0 !important;
-    width: 100% !important;
+    margin: 0.2rem 0.2rem 0.2rem 0 !important;
+  }
+
+  .photolog-filters .MuiFormControl-root:first-child {
+    min-width: 90px !important;
+    max-width: 120px !important;
   }
 
   .photolog-filters-right {
+    width: 100%;
     margin-left: 0;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    display: block;
+  }
+
+  .photolog-filters-right {
+    margin-left: 0.5rem;
+    margin-top: 0;
     justify-content: flex-start;
   }
 
   .location-legend {
-    padding-left: 1.5rem; /* Match mobile title padding */
+    margin-top: 1rem !important;
+    padding: 0 !important;
+    padding-left: 0.2rem !important;
   }
 }
 
@@ -517,7 +559,7 @@ html {
   
   .photolog-container .section-content {
     max-width: 900px;
-    margin-top: 50px;
+    margin-top: 30px;
   }
   
   .photolog-container .location-map-container {
@@ -578,7 +620,7 @@ html {
   /* Mobile title styling */
   .photolog-container .section-title {
     font-size: 1.2rem;
-    padding-left: 1.5rem; /* Increased padding for mobile */
+    padding-left: 0rem; /* Increased padding for mobile */
   }
 
   .photolog-container .location-map-container {
@@ -682,6 +724,7 @@ html {
 
 /* Legend styling */
 .location-legend {
+  padding-left: 2rem;
   margin-top: 1rem;
   padding: 0.5rem 0;
   padding-left: 2rem;

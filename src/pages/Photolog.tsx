@@ -267,6 +267,8 @@ const Photolog = ({ theme }: PhotologProps) => {
         <div className="location-legend">
           <span className="legend-text">
             Dates use the <a className="holocene-calendar" href="https://en.wikipedia.org/wiki/Holocene_calendar">Holocene Calendar</a> — <a className="holocene-calendar" href="https://www.youtube.com/web?v=czgOWmtGVGs">the Human Era</a>.<br/>
+            {/* Mobile-only extra line break */}
+            <br className="legend-mobile-break" />
             <span style={{marginTop: '0.3em', display: 'inline-block'}}>
               <strong>b</strong>&<em>i</em>: places I've been based out of. <span className="secondary">■</span>
             </span>
@@ -307,7 +309,6 @@ const Photolog = ({ theme }: PhotologProps) => {
                   ))}
                 </Select>
               </FormControl>
-              
               <FormControl sx={{ m: 1, minWidth: 180 }}>
                 <InputLabel id="location-select-label">Location</InputLabel>
                 <Select
@@ -339,9 +340,8 @@ const Photolog = ({ theme }: PhotologProps) => {
                 </Select>
               </FormControl>
             </div>
-            
-            {/* Show dates on the right when location is selected */}
-            {selectedLocation && selectedLocation !== "nil" && (
+            {/* Show dates on the right when location is selected (desktop) */}
+            {selectedLocation && selectedLocation !== "nil" && !isMobile && (
               <div className="photolog-filters-right">
                 {(() => {
                   const selectedLocationData = filteredLocations.find(loc => loc.location === selectedLocation);
@@ -354,6 +354,15 @@ const Photolog = ({ theme }: PhotologProps) => {
               </div>
             )}
           </div>
+          {/* For mobile, render date below dropdowns, outside filter row */}
+          {selectedLocation && selectedLocation !== "nil" && isMobile && (() => {
+            const selectedLocationData = filteredLocations.find(loc => loc.location === selectedLocation);
+            return selectedLocationData ? (
+              <div className="location-dates-mobile">
+                {renderDates(selectedLocationData.dates, "date-text")}
+              </div>
+            ) : null;
+          })()}
         </ThemeProvider>
 
         <div className="photolog-layout">
@@ -379,20 +388,20 @@ const Photolog = ({ theme }: PhotologProps) => {
                 }
                 theme={theme}
                 zoom={
-                  // Specific location selected - high zoom
                   (openIdx !== null || (isTransitioning && previousIdx !== null)) && 
                   filteredLocations[openIdx !== null ? openIdx : previousIdx!] 
                     ? 11 
-                    // Country selected but no location - medium zoom to fit country
                     : selectedCountry && !selectedLocation
                     ? 5
-                    // World view - low zoom
-                    : 1.4
+                    : (!selectedCountry && openIdx === null && !isTransitioning && previousIdx === null && isMobile)
+                    ? 0
+                    : (!selectedCountry && openIdx === null && !isTransitioning && previousIdx === null)
+                    ? 1.1
+                    : 5
                 }
-                height={isMobile ? 300 : 400}
+                height={isMobile ? 220 : 400}
                 width={isMobile ? Math.min(windowWidth - 40, 350) : 840}
                 forceWorldView={
-                  // Force world view only when nothing is selected
                   (!selectedCountry && openIdx === null && !isTransitioning && previousIdx === null)
                 }
               />
