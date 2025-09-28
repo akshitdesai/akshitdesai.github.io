@@ -23,10 +23,41 @@ const Photolog = ({ theme }: PhotologProps) => {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [previousIdx, setPreviousIdx] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const [isHeaderVisible, setIsHeaderVisible] = useState<boolean>(true);
 
   useEffect(() => {
     setLocations(photologData as PhotologLocation[]);
   }, []);
+
+  // Handle window resize for responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Handle scroll for header visibility
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingDown = currentScrollY > lastScrollY;
+      const shouldHideHeader = isScrollingDown && currentScrollY > 100;
+      
+      setIsHeaderVisible(!shouldHideHeader);
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const isMobile = windowWidth <= 768;
 
   // Animation duration should match CSS transition (180ms)
   const ANIMATION_DURATION = 180;
@@ -86,7 +117,9 @@ const Photolog = ({ theme }: PhotologProps) => {
 
   return (
     <div className={`photolog-container ${theme}`}>
-      <h2 className="section-title">travel &gt; <span className="secondary">photo.log</span></h2>
+      <h2 className={`section-title ${isHeaderVisible ? 'visible' : 'hidden'}`}>
+        travel &gt; <span className="secondary">photos.log</span>
+      </h2>
       <div className="section-content">
         <div className="photolog-layout">
           {/* Full Screen Map Section */}
@@ -111,8 +144,8 @@ const Photolog = ({ theme }: PhotologProps) => {
                     ? 11 
                     : 1.4
                 }
-                height={400}
-                width={800}
+                height={isMobile ? 300 : 400}
+                width={isMobile ? Math.min(windowWidth - 40, 350) : 800}
                 forceWorldView={
                   (openIdx === null && !isTransitioning && previousIdx === null)
                 }
@@ -154,33 +187,67 @@ const Photolog = ({ theme }: PhotologProps) => {
           <div className="photolog-list-section">
             <ul className="history-list">
               {locations.map((loc, idx) => (
-                <li
-                  key={idx}
-                  className={`history-item ${openIdx === idx ? 'expanded' : ''}`}
-                  onClick={() => handleToggle(idx)}
-                >
-                  <span
-                    className={`secondary history-arrow`}
+                <>
+                  <li
+                    key={idx}
+                    className={`history-item ${openIdx === idx ? 'expanded' : ''}`}
+                    onClick={() => handleToggle(idx)}
                   >
-                    {openIdx === idx ? (
-                      // Double chevron for selected location
-                      <svg width="16" height="16" viewBox="0 0 20 20">
-                        <polyline points="6 6 10 10 6 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                        <polyline points="10 6 14 10 10 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    ) : (
-                      // Single chevron for unselected locations
-                      <svg width="16" height="16" viewBox="0 0 20 20">
-                        <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
-                  </span>
-                  <span className={`history-company ${hasBasedOutOfDates(loc.dates) ? 'based-out-of' : ''}`}>
-                    {openIdx === idx
-                      ? <>{colorFirstN(loc.location, loc.colorN)} - {renderDates(loc.dates, "location-dates-selected")}</>
-                      : <>{loc.location} - {renderDates(loc.dates, "location-dates-unselected")}</>}
-                  </span>
-                </li>
+                    <span
+                      className={`secondary history-arrow ${openIdx === idx ? 'rotated' : ''}`}
+                    >
+                      {isMobile ? (
+                        // Mobile: Single chevron that rotates when selected
+                        <svg width="16" height="16" viewBox="0 0 20 20">
+                          <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      ) : (
+                        // Desktop: Different chevrons for selected/unselected
+                        openIdx === idx ? (
+                          // Double chevron for selected location
+                          <svg width="16" height="16" viewBox="0 0 20 20">
+                            <polyline points="6 6 10 10 6 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                            <polyline points="10 6 14 10 10 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        ) : (
+                          // Single chevron for unselected locations
+                          <svg width="16" height="16" viewBox="0 0 20 20">
+                            <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        )
+                      )}
+                    </span>
+                    <span className={`history-company ${hasBasedOutOfDates(loc.dates) ? 'based-out-of' : ''}`}>
+                      {isMobile ? (
+                        // Mobile: Show only location name, dates in expandable section
+                        openIdx === idx
+                          ? <>{colorFirstN(loc.location, loc.colorN)}</>
+                          : loc.location
+                      ) : (
+                        // Desktop: Show location and dates inline
+                        openIdx === idx
+                          ? <>{colorFirstN(loc.location, loc.colorN)} - {renderDates(loc.dates, "location-dates-selected")}</>
+                          : <>{loc.location} - {renderDates(loc.dates, "location-dates-unselected")}</>
+                      )}
+                    </span>
+                  </li>
+                  {isMobile && (
+                    <li className={`history-details${openIdx === idx ? ' open' : ''}`}>
+                      <ul className="history-details-list">
+                        {loc.dates.map((dateObj, dateIdx) => (
+                          <li key={dateIdx} className="history-details-item">
+                            <span className="secondary history-bullet">•</span>
+                            <span className={dateObj.basedOutOf ? 'based-out-of' : ''}>
+                              {dateObj.basedOutOf ? 
+                                <><span className="secondary">{dateObj.date.charAt(0)}</span>{dateObj.date.slice(1)}</> 
+                                : dateObj.date}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  )}
+                </>
               ))}
             </ul>
             {/* Legend for based out of locations */}

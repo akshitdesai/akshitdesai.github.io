@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import pingData from '../data/ping.json';
 import PingPong from './PingPong';
 import './Ping.css';
@@ -9,12 +9,26 @@ interface PingProps {
 
 const Ping: React.FC<PingProps> = ({ theme }) => {
   const [hoveredPlatform, setHoveredPlatform] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  // Check if the screen is mobile size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Create multiple randomized lists once on initial load
   const randomizedLists = useMemo(() => {
     const createShuffledList = () => [...pingData].sort(() => Math.random() - 0.5);
-    return Array.from({ length: 6 }, () => createShuffledList());
-  }, []);
+    const length = isMobile ? 2 : 6;
+    return Array.from({ length }, () => createShuffledList());
+  }, [isMobile]);
 
   const renderPlatformLinks = (listIndex: number, showSpacing: boolean = true) => {
     const shuffledData = randomizedLists[listIndex];
