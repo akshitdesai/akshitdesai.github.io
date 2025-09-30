@@ -25,7 +25,8 @@
         "Windsor", 
         "Toronto",
         "Niagara Falls"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Ontario"
     },
     {
       "location": "Quebec",
@@ -53,7 +54,8 @@
         "Quebec City",
         "Grace Field",
         "Montreal"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Quebec"
     },
     {
       "location": "Texas",
@@ -68,7 +70,8 @@
       ],
       "places": [
         "Austin"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Texas"
     },
     {
       "location": "British Columbia",
@@ -85,7 +88,8 @@
       "places": [
         "Kamloops",
         "Vancouver"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/BritishColumbia"
     },
     {
       "location": "Alberta",
@@ -108,7 +112,8 @@
         "Drumheller",
         "Edmonton",
         "Banff"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Alberta"
     },
     {
       "location": "Dubai",
@@ -122,7 +127,8 @@
       ],
       "places": [
         "Dubai"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Dubai"
     },
     {
       "location": "Karnataka",
@@ -138,7 +144,8 @@
       ],
       "places": [
         "Bengaluru"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Karnataka"
     },
     {
       "location": "Maharashtra",
@@ -152,7 +159,8 @@
       ],
       "places": [
         "Matheran"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Maharashtra"
     },
     {
       "location": "Rajasthan",
@@ -166,7 +174,8 @@
       ],
       "places": [
         "Udaipur"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Rajasthan"
     },
     {
       "location": "Gujarat",
@@ -182,7 +191,8 @@
       ],
       "places": [
         "Anand"
-      ]
+      ],
+  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Gujarat"
     }
   ]
 }

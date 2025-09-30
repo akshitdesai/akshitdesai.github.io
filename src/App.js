@@ -26,19 +26,19 @@ function App() {
   const [section, setSection] = useState(getInitialSection);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Update URL when section changes and remove query params
+  // Update URL when section changes and remove only the 'section' query param
   const updateSection = (newSection) => {
     setSection(newSection);
     const url = new URL(window.location);
-    url.search = ''; // Remove all query parameters
+    url.searchParams.delete('section');
     window.history.pushState({}, '', url);
   };
 
-  // Remove query parameter on initial load
+  // Remove only the 'section' query parameter on initial load, keep others
   useEffect(() => {
     const url = new URL(window.location);
     if (url.searchParams.has('section')) {
-      url.search = '';
+      url.searchParams.delete('section');
       window.history.replaceState({}, '', url);
     }
   }, []);

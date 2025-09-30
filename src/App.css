@@ -122,7 +122,7 @@ body, .App {
   box-shadow: 0 2px 16px rgba(0,0,0,0.08);
   margin-top: 60px; /* Adds space above the menu */
   padding: 0.5rem 2rem;
-  z-index: 100;
+  z-index: 1101;
   font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
 }
 .App.dark .top-menu {

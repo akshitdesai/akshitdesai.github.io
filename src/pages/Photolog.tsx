@@ -25,6 +25,7 @@ interface PhotologLocation {
   coordinates: { lat: number; lng: number }[];
   dates: { date: string; basedOutOf: boolean }[];
   places: string[];
+  photoURL?: string;
 }
 
 interface PhotologData {
@@ -444,7 +445,20 @@ const Photolog = ({ theme }: PhotologProps) => {
         </div>
         
         {/* Photos Gallery */}
-        <PhotoGallery theme={theme} />
+        {(() => {
+          let imagesUrl: string | undefined = undefined;
+          if (selectedLocation && selectedLocation !== "nil") {
+            const selectedLocationData = filteredLocations.find(loc => loc.location === selectedLocation);
+            imagesUrl = selectedLocationData?.photoURL;
+          }
+          return (
+            <PhotoGallery 
+              theme={theme}
+              location={selectedLocation}
+              imagesUrl={imagesUrl}
+            />
+          );
+        })()}
       </div>
     </div>
   );
