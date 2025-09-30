@@ -433,18 +433,6 @@ const Photolog = ({ theme }: PhotologProps) => {
                   Countries I've been to. <span className="secondary">■</span>
                 </div>
               )}
-              {!isTransitioning && selectedCountry && !selectedLocation && (
-                <div className="map-overlay-text" style={{
-                  position: 'absolute',
-                  bottom: '30px',
-                  left: '80px',
-                  color: 'var(--text-color)',
-                  fontSize: '14px',
-                  zIndex: 5
-                }}>
-                  {countries.find(c => c.code === selectedCountry)?.flag} {countries.find(c => c.code === selectedCountry)?.name} locations. <span className="secondary">■</span>
-                </div>
-              )}
             </div>
             <div className="location-dates-container">
             </div>
