@@ -145,7 +145,7 @@ const History = ({ theme }: HistoryProps) => {
                             : exp.subExp.startDate}
                           -{exp.subExp.endDate}
                         </span>
-                        <span className="history-company">
+                        <span className="history-company" style={{ display: 'inline-block', position: 'relative', top: '7px' }}>
                           {openIdx && openIdx.type === 'workexp' && openIdx.idx === idx
                             ? <>{colorFirstN(exp.subExp.company, exp.subExp.colorN)}</>
                             : exp.subExp.company}
