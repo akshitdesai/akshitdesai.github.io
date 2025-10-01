@@ -477,9 +477,11 @@ const PingPong = ({ theme }: PingPongProps) => {
       gameStateRef.current.rightServe = false;
     }
     if (e.code === 'ArrowUp') {
+      e.preventDefault();
       yPaddleRightRef.current -= paddleStep;
     }
     if (e.code === 'ArrowDown') {
+      e.preventDefault();
       yPaddleRightRef.current += paddleStep;
     }
 

@@ -7,6 +7,7 @@ import Ping from './pages/Ping';
 import Photolog from './pages/Photolog';
 import MobileMenu from './components/MobileMenu';
 import ThemeToggle from './components/ThemeToggle';
+import Now from './pages/Now';
 
 function App() {
   const [theme, setTheme] = useState('dark');
@@ -16,7 +17,7 @@ function App() {
   };
 
   // Get initial section from URL query parameter or default to 'whoami'
-  const validSections = ['whoami', 'history', 'projectree', 'photolog', 'ping'];
+  const validSections = ['now', 'whoami', 'history', 'projectree', 'photolog', 'ping'];
   // Get section from path, e.g. /history
   const getInitialSection = () => {
     const path = window.location.pathname.replace(/^\//, '');
@@ -63,6 +64,8 @@ function App() {
         return <Photolog theme={theme} />;
       case 'ping':
         return <Ping theme={theme} />;
+      case 'now':
+        return <Now />;
       default:
         return null;
     }
@@ -82,6 +85,7 @@ function App() {
       
       <nav className="top-menu">
         <div className="menu-buttons">
+          <button className={section === 'now' ? 'active' : ''} onClick={() => updateSection('now')}>now</button>
           <button className={section === 'whoami' ? 'active' : ''} onClick={() => updateSection('whoami')}>whoami</button>
           <button className={section === 'history' ? 'active' : ''} onClick={() => updateSection('history')}>history</button>
           <button className={section === 'projectree' ? 'active' : ''} onClick={() => updateSection('projectree')}>projectree</button>

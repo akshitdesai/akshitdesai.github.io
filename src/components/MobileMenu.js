@@ -36,6 +36,7 @@ const MobileMenu = ({ section, setSection, isDropdownOpen, setIsDropdownOpen, th
       </button>
       {isDropdownOpen && (
         <ul className="dropdown-list">
+          <li onClick={() => handleSectionChange('now')} className={section === 'now' ? 'active' : ''}>now</li>
           <li onClick={() => handleSectionChange('whoami')} className={section === 'whoami' ? 'active' : ''}>whoami</li>
           <li onClick={() => handleSectionChange('history')} className={section === 'history' ? 'active' : ''}>history</li>
           <li onClick={() => handleSectionChange('projectree')} className={section === 'projectree' ? 'active' : ''}>projectree</li>
