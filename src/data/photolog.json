@@ -17,8 +17,9 @@
         { "lat": 43.0896, "lng": -79.0849 }
       ],
       "dates": [
+        { "date": "12023-05", "basedOutOf": false },
         { "date": "12024-[05,12]", "basedOutOf": false },
-        { "date": "12023-05", "basedOutOf": false }
+        { "date": "12025-06", "basedOutOf": false }
       ],
       "places": [
         "Ottawa",
@@ -33,14 +34,16 @@
       "country": "CA",
       "colorN": 6,
       "coordinates": [
-        { "lat": 46.0167, "lng": -75.0833 },
+        { "lat": 45.9924, "lng": -74.8821 },
         { "lat": 46.1187, "lng": -74.5977 },
-        { "lat": 45.3167, "lng": -72.2000 },
-        { "lat": 45.1667, "lng": -71.1167 },
-        { "lat": 46.7833, "lng": -70.1167 },
+        { "lat": 45.3176, "lng": -72.2212 },
+        { "lat": 45.3946, "lng": -71.0731 },
+        { "lat": 46.6828, "lng": -70.4552 },
         { "lat": 46.8139, "lng": -71.2080 },
-        { "lat": 45.7833, "lng": -74.3167 },
-        { "lat": 45.5017, "lng": -73.5673 }
+        { "lat": 45.5017, "lng": -73.5673 },
+        { "lat": 46.0926, "lng": -76.0532 },
+        { "lat": 45.4651, "lng": -74.0799 }
+
       ],
       "dates": [
         { "date": "12022-12024", "basedOutOf": true }
@@ -53,9 +56,10 @@
         "Saint-Philemon",
         "Quebec City",
         "Grace Field",
-        "Montreal"
+        "Montreal",
+        "Oka"
       ],
-  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Quebec"
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Quebec"
     },
     {
       "location": "Texas",
@@ -71,7 +75,7 @@
       "places": [
         "Austin"
       ],
-  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Texas"
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Texas"
     },
     {
       "location": "British Columbia",
@@ -79,7 +83,13 @@
       "colorN": 16,
       "coordinates": [
         { "lat": 50.6745, "lng": -120.3273 },
-        { "lat": 49.2827, "lng": -123.1207 }
+        { "lat": 49.2827, "lng": -123.1207 },
+        { "lat": 48.4284, "lng": -123.3656 },
+        { "lat": 50.1163, "lng": -122.9574 },
+        { "lat": 49.7016, "lng": -123.1558 },
+        { "lat": 49.1042, "lng": -122.6604 },
+        { "lat": 50.3220, "lng": -122.8050 },
+        { "lat": 50.4093, "lng": -122.43884 }
       ],
       "dates": [
         { "date": "12023-[05-08]", "basedOutOf": true },
@@ -87,7 +97,14 @@
       ],
       "places": [
         "Kamloops",
-        "Vancouver"
+        "Vancouver",
+        "Victoria",
+        "Whistler",
+        "Squamish",
+        "Langley",
+        "Pemberton",
+        "Rohr Lake"
+
       ],
   "photoURL": "https://github.com/akshitdesai/photolog/tree/main/BritishColumbia"
     },
@@ -97,23 +114,26 @@
       "colorN": 7,
       "coordinates": [
         { "lat": 51.0447, "lng": -114.0719 },
-        { "lat": 50.9739, "lng": -115.0436 },
+        { "lat": 50.7885, "lng": -114.8148 },
         { "lat": 51.4639, "lng": -112.7078 },
         { "lat": 53.5444, "lng": -113.4909 },
-        { "lat": 51.1784, "lng": -115.5708 }
+        { "lat": 51.1784, "lng": -115.5708 },
+        { "lat": 52.8734, "lng": -118.0814 }
       ],
       "dates": [
+        { "date": "12023-06", "basedOutOf": false },
         { "date": "12024-08", "basedOutOf": false },
-        { "date": "12023-06", "basedOutOf": false }
+        { "date": "12025-05", "basedOutOf": false }
       ],
       "places": [
         "Calgary",
         "Kananaskis",
         "Drumheller",
         "Edmonton",
-        "Banff"
+        "Banff National Park",
+        "Jasper National Park"
       ],
-  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Alberta"
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Alberta"
     },
     {
       "location": "Dubai",
@@ -152,15 +172,17 @@
       "country": "IN",
       "colorN": 11,
       "coordinates": [
-        { "lat": 18.9847, "lng": 73.2673 }
+        { "lat": 18.9847, "lng": 73.2673 },
+        { "lat": 17.9300, "lng": 73.6479 }
       ],
       "dates": [
         { "date": "12022-07", "basedOutOf": false }
       ],
       "places": [
-        "Matheran"
+        "Matheran",
+        "Mahabaleshwar"
       ],
-  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Maharashtra"
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Maharashtra"
     },
     {
       "location": "Rajasthan",
@@ -175,24 +197,112 @@
       "places": [
         "Udaipur"
       ],
-  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Rajasthan"
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Rajasthan"
     },
     {
       "location": "Gujarat",
       "country": "IN",
       "colorN": 7,
       "coordinates": [
-        { "lat": 22.5645, "lng": 72.9289 }
+        { "lat": 22.5645, "lng": 72.9289 },
+        { "lat": 21.1702, "lng": 72.8753 },
+        { "lat": 22.3072, "lng": 73.1812 },
+        { "lat": 23.0225, "lng": 72.5714 },
+        { "lat": 22.1573, "lng": 71.7711 },
+        { "lat": 21.9682, "lng": 71.5754 },
+        { "lat": 21.6537, "lng": 71.0069 },
+        { "lat": 21.8737, "lng": 72.8737 },
+        { "lat": 22.2499, "lng": 72.1934 },
+        { "lat": 21.7837, "lng": 71.5148 },
+        { "lat": 20.9467, "lng": 72.9520 }
       ],
       "dates": [
         { "date": "~12022-08", "basedOutOf": true },
-        { "date": "12023-01", "basedOutOf": false },
-        { "date": "12024-02", "basedOutOf": false }
+        { "date": "12024-01", "basedOutOf": false },
+        { "date": "12025-02", "basedOutOf": false }
       ],
       "places": [
-        "Anand"
+        "Anand",
+        "Surat",
+        "Vadodara",
+        "Ahmedabad",
+        "Salangpur",
+        "Gadhada",
+        "Kukavav",
+        "Vadtal",
+        "Dholera",
+        "Dhasa",
+        "Navsari"
       ],
-  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Gujarat"
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Gujarat"
+    },
+    {
+      "location": "Kerala",
+      "country": "IN",
+      "colorN": 0,
+      "coordinates": [
+        { "lat": 9.9312, "lng": 76.2673 },
+        { "lat": 10.0889, "lng": 77.0595 },
+        { "lat": 9.6031, "lng": 77.1615 },
+        { "lat": 9.4981, "lng": 76.3388 }
+      ],
+      "dates": [
+        { "date": "12025-02", "basedOutOf": false }
+      ],
+      "places": [
+        "Kochi",
+        "Munnar",
+        "Thekkady",
+        "Alappuzha"
+      ],
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Kerala"
+    },
+    {
+      "location": "Washington",
+      "country": "US",
+      "colorN": 0,
+      "coordinates": [
+        { "lat": 47.6061, "lng": -122.3328 }
+      ],
+      "dates": [
+        { "date": "12025-07", "basedOutOf": false }
+      ],
+      "places": [
+        "Seattle"
+      ],
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Washington"
+    },
+    {
+      "location": "Oregon",
+      "country": "US",
+      "colorN": 0,
+      "coordinates": [
+        { "lat": 42.9295, "lng": -122.1279 },
+        { "lat": 45.8918, "lng": -123.9615 }
+      ],
+      "dates": [
+        { "date": "12025-07", "basedOutOf": false }
+      ],
+      "places": [
+        "Crater Lake National Park",
+        "Cannon Beach"
+      ],
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Oregon"
+    },
+    {
+      "location": "Montana",
+      "country": "US",
+      "colorN": 0,
+      "coordinates": [
+        { "lat": 48.7561, "lng": -113.7797 }
+      ],
+      "dates": [
+        { "date": "12025-08", "basedOutOf": false }
+      ],
+      "places": [
+        "Glacier National Park"
+      ],
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Montana"
     }
   ]
 }

@@ -116,7 +116,12 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ theme, location, imagesUrl 
       <div className="photo-gallery-content">
         {location && imagesUrl ? (
           <>
-            {loading && <p>Loading images...</p>}
+            {loading && (
+              <div className="photo-gallery-loading">
+                <span className="photo-gallery-spinner" />
+                <span className="photo-gallery-loading-text"><span className="photo-gallery-dots"></span></span>
+              </div>
+            )}
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {photos.length > 0 ? (
               <Gallery
