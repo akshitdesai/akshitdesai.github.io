@@ -484,7 +484,7 @@ const PingPong = ({ theme }: PingPongProps) => {
     }
 
     boundToWindow();
-  }, [paddleStep, hasServedOnce]);
+  }, [paddleStep, hasServedOnce, finished]);
 
   const animate = useCallback(() => {
     draw();

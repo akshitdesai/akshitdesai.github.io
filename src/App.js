@@ -16,31 +16,39 @@ function App() {
   };
 
   // Get initial section from URL query parameter or default to 'whoami'
+  const validSections = ['whoami', 'history', 'projectree', 'photolog', 'ping'];
+  // Get section from path, e.g. /history
   const getInitialSection = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sectionParam = urlParams.get('section');
-    const validSections = ['whoami', 'history', 'projectree', 'photolog', 'ping'];
-    return validSections.includes(sectionParam) ? sectionParam : 'whoami';
+    const path = window.location.pathname.replace(/^\//, '');
+    return validSections.includes(path) ? path : 'whoami';
   };
 
   const [section, setSection] = useState(getInitialSection);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Update URL when section changes and remove only the 'section' query param
+  // Update URL when section changes and set the path, preserving ?uh=true if present
   const updateSection = (newSection) => {
     setSection(newSection);
     const url = new URL(window.location);
-    url.searchParams.delete('section');
+    url.pathname = newSection === 'whoami' ? '/' : `/${newSection}`;
+    // Preserve ?uh=true if present
+    const uh = url.searchParams.get('uh');
+    if (uh === 'true') {
+      url.search = '?uh=true';
+    } else {
+      url.search = '';
+    }
     window.history.pushState({}, '', url);
   };
 
-  // Remove only the 'section' query parameter on initial load, keep others
+  // Listen for popstate to handle browser navigation (back/forward)
   useEffect(() => {
-    const url = new URL(window.location);
-    if (url.searchParams.has('section')) {
-      url.searchParams.delete('section');
-      window.history.replaceState({}, '', url);
-    }
+    const onPopState = () => {
+      const path = window.location.pathname.replace(/^\//, '');
+      setSection(validSections.includes(path) ? path : 'whoami');
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
   const renderSection = () => {
