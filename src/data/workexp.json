@@ -16,7 +16,7 @@
                 "colorN": 4,
 				"position": "Software Dev Engineer Intern",
 				"description": [
-					"Worked in Replenishment services team and unified apis for reorderablity score of items.",
+					"Worked in Replenishment services team and unified apis for replenishment (products that are likely to be reordered) score of items.",
                     "Enabled 10+ teams to onboard with ease."
 				]
 		}
@@ -28,7 +28,7 @@
         "colorN": 5,
 		"position": "Software Engineer, Backend Contract",
 		"description": [
-			"Founding member, worked on everything for AI-driven indoor/outdoor security camera products.",
+			"Founding member, worked on backend, devops, IoT etc. for AI-driven indoor/outdoor security camera products.",
 			"Engineered wrapper library, designed backend & db architecture, automated load tests, and integrated AWS IoT services."
 		]
 	},
