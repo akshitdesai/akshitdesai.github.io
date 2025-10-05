@@ -83,23 +83,20 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ theme, location, imagesUrl 
       setPhotos([]);
       return;
     }
-    Promise.all(
-      imageLinks.map(
-        (url) =>
-          new Promise<{ src: string; width: number; height: number; loading: string }>((resolve) => {
-            const img = new window.Image();
-            img.onload = function () {
-              resolve({ src: url, width: img.naturalWidth, height: img.naturalHeight, loading: 'lazy' });
-            };
-            img.onerror = function () {
-              // fallback to 4:3 if cannot load
-              resolve({ src: url, width: 4, height: 3, loading: 'lazy' });
-            };
-            img.src = url;
-          })
-      )
-    ).then((results) => {
-      if (isMounted) setPhotos(results);
+    setPhotos([]); // Clear previous photos
+    imageLinks.forEach((url) => {
+      const img = new window.Image();
+      img.onload = function () {
+        if (isMounted) {
+          setPhotos((prev) => [...prev, { src: url, width: img.naturalWidth, height: img.naturalHeight, loading: 'lazy' }]);
+        }
+      };
+      img.onerror = function () {
+        if (isMounted) {
+          setPhotos((prev) => [...prev, { src: url, width: 4, height: 3, loading: 'lazy' }]);
+        }
+      };
+      img.src = url;
     });
     return () => {
       isMounted = false;
