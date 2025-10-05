@@ -1,3 +1,7 @@
+/* Secondary color utility class for text */
+.secondary-color {
+  color: var(--secondary-color, #888);
+}
 /* Animated loading spinner and dots for PhotoGallery */
 .photo-gallery-loading {
   display: flex;

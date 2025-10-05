@@ -34,6 +34,7 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ theme, location, imagesUrl 
       return;
     }
     lastFetchedUrl.current = imagesUrl;
+    setImageLinks([]);
     setLoading(true);
     setError(null);
 
@@ -66,7 +67,8 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ theme, location, imagesUrl 
         setLoading(false);
       })
       .catch(err => {
-        setError('Failed to fetch images');
+        setImageLinks([]);
+        setError('This location is still compiling memories...');
         setLoading(false);
       });
   }, [imagesUrl, shouldShowHidden]);
@@ -122,7 +124,18 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ theme, location, imagesUrl 
                 <span className="photo-gallery-loading-text"><span className="photo-gallery-dots"></span></span>
               </div>
             )}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && (
+              <div style={{ textAlign: 'center', margin: '2em 0' }}>
+                {error.split('compiling memories...').length > 1 ? (
+                  <span>
+                    This location is still{' '}
+                    <span className="secondary-color">compiling memories.</span>
+                  </span>
+                ) : (
+                  <span>{error}</span>
+                )}
+              </div>
+            )}
             {photos.length > 0 ? (
               <Gallery
                 photos={photos}
