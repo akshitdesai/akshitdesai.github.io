@@ -18,15 +18,7 @@ const Now = () => (
               <circle cx="5" cy="5" r="4" fill="currentColor" />
             </svg>
           </span>
-          Learning to build AI agents.
-        </li>
-        <li className="activity-item">
-          <span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.7em'}}>
-            <svg width="7" height="7" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(2px)'}}>
-              <circle cx="5" cy="5" r="4" fill="currentColor" />
-            </svg>
-          </span>
-          Improving the UI of this website.
+          Learning to build AI workflows using agents, MCP tools and LLM.
         </li>
         <li className="activity-item">
           <span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.7em'}}>
@@ -35,6 +27,14 @@ const Now = () => (
             </svg>
           </span>
           Experimenting with different LLM models and openllm on MAC M4 mini.
+        </li>
+        <li className="activity-item">
+          <span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.7em'}}>
+            <svg width="7" height="7" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(2px)'}}>
+              <circle cx="5" cy="5" r="4" fill="currentColor" />
+            </svg>
+          </span>
+          Improving the UI of this website.
         </li>
       </ul>
 
