@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Link,
+  useNavigate,
+  useLocation,
+  Outlet,
+} from 'react-router-dom';
 import './App.css';
 import AboutMe from './pages/AboutMe';
 import History from './pages/History';
@@ -11,11 +18,10 @@ import ThemeToggle from './components/ThemeToggle';
 import Now from './pages/Now';
 
 
-function AppRoutes({ theme, isDropdownOpen, setIsDropdownOpen, toggleTheme }) {
-  const navigate = useNavigate();
+
+function AppLayout({ theme, isDropdownOpen, setIsDropdownOpen, toggleTheme }) {
   const location = useLocation();
   const validSections = ['now', 'whoami', 'history', 'projectree', 'photolog', 'ping'];
-  // Determine current section from path
   const section = (() => {
     const path = location.pathname.replace(/^\//, '');
     return validSections.includes(path) ? path : 'whoami';
@@ -23,11 +29,11 @@ function AppRoutes({ theme, isDropdownOpen, setIsDropdownOpen, toggleTheme }) {
 
   // Update section by navigating
   const updateSection = (newSection) => {
-    // Preserve ?uh=true if present
     const params = new URLSearchParams(location.search);
     const uh = params.get('uh');
     const search = uh === 'true' ? '?uh=true' : '';
-    navigate(newSection === 'whoami' ? '/' : `/${newSection}${search}`);
+    window.history.pushState({}, '', newSection === 'whoami' ? '/' : `/${newSection}${search}`);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   return (
@@ -51,21 +57,31 @@ function AppRoutes({ theme, isDropdownOpen, setIsDropdownOpen, toggleTheme }) {
         <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
       </nav>
       <main className="content">
-        <Routes>
-          <Route path="/" element={<AboutMe />} />
-          <Route path="/whoami" element={<AboutMe />} />
-          <Route path="/history" element={<History theme={theme} />} />
-          <Route path="/projectree" element={<Projectree />} />
-          <Route path="/photolog" element={<Photolog theme={theme} />} />
-          <Route path="/ping" element={<Ping theme={theme} />} />
-          <Route path="/now" element={<Now />} />
-          <Route path="*" element={<AboutMe />} />
-        </Routes>
+        <Outlet />
       </main>
     </div>
   );
 }
 
+
+
+const getRouter = (theme, isDropdownOpen, setIsDropdownOpen, toggleTheme) =>
+  createBrowserRouter([
+    {
+      path: '/',
+      element: <AppLayout theme={theme} isDropdownOpen={isDropdownOpen} setIsDropdownOpen={setIsDropdownOpen} toggleTheme={toggleTheme} />,
+      children: [
+        { path: '', element: <AboutMe /> },
+        { path: 'whoami', element: <AboutMe /> },
+        { path: 'history', element: <History theme={theme} /> },
+        { path: 'projectree', element: <Projectree /> },
+        { path: 'photolog', element: <Photolog theme={theme} /> },
+        { path: 'ping', element: <Ping theme={theme} /> },
+        { path: 'now', element: <Now /> },
+        { path: '*', element: <AboutMe /> },
+      ],
+    },
+  ], { basename: '/' });
 
 function App() {
   const [theme, setTheme] = useState('dark');
@@ -82,16 +98,8 @@ function App() {
     }
   }, [theme]);
 
-  return (
-    <Router>
-      <AppRoutes
-        theme={theme}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
-        toggleTheme={toggleTheme}
-      />
-    </Router>
-  );
+  const router = getRouter(theme, isDropdownOpen, setIsDropdownOpen, toggleTheme);
+  return <RouterProvider router={router} />;
 }
 
 export default App;

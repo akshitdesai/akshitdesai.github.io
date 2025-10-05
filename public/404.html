@@ -1,0 +1,32 @@
+<!--
+  This file is necessary for client-side routing to work on GitHub Pages.
+  It redirects all 404s to index.html so your SPA can handle the route.
+  Source: https://github.com/rafgraph/spa-github-pages
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+      // SPA redirect script from rafgraph/spa-github-pages
+      (function(l) {
+        var pathname = l.pathname;
+        var search = l.search;
+        var hash = l.hash;
+        var redirect = '/index.html';
+        if (pathname !== redirect) {
+          var newUrl = redirect + '?redirect=' + encodeURIComponent(pathname + search) + hash;
+          l.replace(newUrl);
+        }
+      }(window.location));
+    </script>
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <h1>Redirecting...</h1>
+    <p>If you are not redirected automatically, <a id="redirect-link" href="#">click here</a>.</p>
+    <script>
+      document.getElementById('redirect-link').href = '/index.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
+    </script>
+  </body>
+</html>

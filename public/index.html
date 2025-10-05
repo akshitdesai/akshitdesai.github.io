@@ -29,6 +29,16 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- SPA GitHub Pages redirect script: restores route after redirect from 404.html -->
+    <script type="text/javascript">
+      (function() {
+        var redirect = window.location.search.match(/redirect=([^&]+)/);
+        if (redirect) {
+          var decoded = decodeURIComponent(redirect[1]);
+          window.history.replaceState(null, '', decoded);
+        }
+      })();
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
