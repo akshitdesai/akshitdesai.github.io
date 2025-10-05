@@ -1,3 +1,7 @@
+/* Consistent margin for activity-item across all pages */
+.activity-item {
+	margin-bottom: 0.5em;
+}
 /* Max width for education subdesc section */
 .edu-subdesc-title {
 	max-width: 500em;
@@ -124,5 +128,13 @@
 	color: #a06be0;
 }
 .App.dark .holocene-calendar:hover {
+	color: #00ff41;
+}
+
+/* Secondary text color for themes */
+.App.light .secondary-text {
+	color: #a06be0;
+}
+.App.dark .secondary-text {
 	color: #00ff41;
 }

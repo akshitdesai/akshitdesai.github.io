@@ -29,11 +29,13 @@ const AboutMe = () => (
     <h2><span className="secondary-text">If</span> not in front of a terminal, I'm,</h2>
     <div>
       <ul className="activities-list">
-  <li className="activity-item"><span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.5em'}}><svg width="10" height="10" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(6px)'}}><circle cx="5" cy="5" r="4" fill="currentColor" /></svg></span>Hiking and exploring trails ⛰️.</li>
-  <li className="activity-item"><span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.5em'}}><svg width="10" height="10" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(6px)'}}><circle cx="5" cy="5" r="4" fill="currentColor" /></svg></span>Chasing sunsets 🌅.</li>
-  <li className="activity-item"><span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.5em'}}><svg width="10" height="10" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(6px)'}}><circle cx="5" cy="5" r="4" fill="currentColor" /></svg></span>Getting lost in nature with a camera 📷.</li>
+  <li className="activity-item"><span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.7em'}}><svg width="7" height="7" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(6px)'}}><circle cx="5" cy="5" r="4" fill="currentColor" /></svg></span>Hiking and exploring trails ⛰️.</li>
+  <li className="activity-item"><span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.7em'}}><svg width="7" height="7" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(6px)'}}><circle cx="5" cy="5" r="4" fill="currentColor" /></svg></span>Chasing sunsets 🌅.</li>
+  <li className="activity-item"><span className="secondary-text" style={{display: 'inline-flex', alignItems: 'center', height: '1em', marginRight: '0.7em'}}><svg width="7" height="7" viewBox="0 0 10 10" style={{display: 'block', transform: 'translateY(6px)'}}><circle cx="5" cy="5" r="4" fill="currentColor" /></svg></span>Getting lost in nature with a camera 📷.</li>
       </ul>
-    </div>    <h3><span className="secondary-text">No promises</span>, I'm actually good at anything.</h3>
+    </div>    
+    
+    <h3><span className="secondary-text">No promises</span>, I'm actually good at anything.</h3>
   </div>
 );
 
