@@ -27,8 +27,8 @@ interface WorkExp {
 }
 
 interface Edu {
-  startDate: string;
-  endDate: string;
+  // startDate: string;
+  // endDate: string;
   institute: string;
   colorN: number;
   degree: string;
@@ -181,12 +181,12 @@ const History = ({ theme }: HistoryProps) => {
                   <polyline points="8 6 12 10 8 14" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
-              <span className="history-date">
+              {/* <span className="history-date">
                 {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
                   ? <>{colorFirstN(ed.startDate, 8)}</>
                   : ed.startDate}
                 -{ed.endDate}
-              </span>
+              </span> */}
               <span className="history-company history-institute">
                 {openIdx && openIdx.type === 'edu' && openIdx.idx === idx
                   ? <>{colorFirstN(ed.institute,  ed.colorN)}</>

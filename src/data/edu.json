@@ -1,7 +1,5 @@
 [
 	{
-		"startDate": "12024-05",
-		"endDate": "12022-09",
 		"institute": "Concordia University",
         "colorN": 9,
 		"degree": "Masters of Applied Computer Science",
@@ -13,17 +11,15 @@
 			{
 				"title": "Teaching Assistant",
 				"description": [
-						"SOEN-363, Database Systems for Software Engineers (Winter & Fall 12023)",
-						"COMP-353, Databases (Fall 12023)",
-						"COMP-345, Advanced Program Design with C++ (Winter 12024)",
-						" BTM-382, Database Management (Winter 12024)"
+						"SOEN-363, Database Systems for Software Engineers",
+						"COMP-353, Databases",
+						"COMP-345, Advanced Program Design with C++",
+						" BTM-382, Database Management"
 				]
 			}
 		]
 	},
 	{
-		"startDate": "12017-06",
-		"endDate": "12021-05",
 		"institute": "Gujarat Technological University",
         "colorN": 7,
 		"degree": "B.E. in Info. Tech.",
