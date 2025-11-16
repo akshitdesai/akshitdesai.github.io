@@ -395,7 +395,7 @@ p {
 }
 
 /* Media queries for mobile */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .top-menu {
     gap: 1rem;
     padding: 0.5rem 1rem;
