@@ -18,9 +18,11 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ theme, location, imagesUrl 
   const lastFetchedUrl = useRef<string | undefined>(undefined);
   // Helper to check if query param uh=true is present
   const shouldShowHidden = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    const params = new URLSearchParams(window.location.search);
-    return params.get('uh') === 'true';
+    // Temporarily disabled - always return false
+    // if (typeof window === 'undefined') return false;
+    // const params = new URLSearchParams(window.location.search);
+    // return params.get('uh') === 'true';
+    return false;
   }, []);
 
   useEffect(() => {
