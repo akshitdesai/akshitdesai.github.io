@@ -89,7 +89,15 @@
         { "lat": 49.7016, "lng": -123.1558 },
         { "lat": 49.1042, "lng": -122.6604 },
         { "lat": 50.3220, "lng": -122.8050 },
-        { "lat": 50.4093, "lng": -122.43884 }
+        { "lat": 50.4093, "lng": -122.43884 },
+        { "lat": 49.0646, "lng": -120.7816 },
+        { "lat": 50.6936, "lng": -121.9336 },
+        { "lat": 50.8117, "lng": -121.3233 },
+        { "lat": 50.2328, "lng": -121.5842 },
+        { "lat": 49.7058, "lng": -121.4094 },
+        { "lat": 49.8821, "lng": -119.4778 },
+        { "lat": 49.4895, "lng": -119.5896 },
+        { "lat": 52.3239, "lng": -120.1497 }
       ],
       "dates": [
         { "date": "12023-[05-08]", "basedOutOf": true },
@@ -103,10 +111,17 @@
         "Squamish",
         "Langley",
         "Pemberton",
-        "Rohr Lake"
-
+        "Rohr Lake",
+        "Lillooet",
+        "Cache Creek",
+        "Lytton",
+        "Alexandra bridge province park",
+        "Kelwona",
+        "Penticton",
+        "EC Manning Provincial Park",
+        "Wells Gray Provincial Park"
       ],
-  "photoURL": "https://github.com/akshitdesai/photolog/tree/main/BritishColumbia"
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/BritishColumbia"
     },
     {
       "location": "Alberta",
@@ -262,13 +277,16 @@
       "country": "US",
       "colorN": 0,
       "coordinates": [
-        { "lat": 47.6061, "lng": -122.3328 }
+        { "lat": 47.6061, "lng": -122.3328 },
+        { "lat": 48.4061, "lng": -122.6450 }
       ],
       "dates": [
-        { "date": "12025-07", "basedOutOf": false }
+        { "date": "12025-07", "basedOutOf": false },
+        { "date": "12026-05", "basedOutOf": false }
       ],
       "places": [
-        "Seattle"
+        "Seattle",
+        "Deception Pass Bridge"
       ],
       "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Washington"
     },
@@ -303,6 +321,25 @@
         "Glacier National Park"
       ],
       "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Montana"
+    },
+    {
+      "location": "Arizona",
+      "country": "US",
+      "colorN": 7,
+      "coordinates": [
+        { "lat": 33.4484, "lng": -112.0740 },
+        { "lat": 35.1983, "lng": -111.6513 },
+        { "lat": 36.9147, "lng": -111.4558 }
+      ],
+      "dates": [
+        { "date": "12026-04", "basedOutOf": false }
+      ],
+      "places": [
+        "Phoenix",
+        "Flagstaff",
+        "Page"
+      ],
+      "photoURL": "https://github.com/akshitdesai/photolog/tree/main/Arizona"
     }
   ]
 }
